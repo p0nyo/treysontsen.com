@@ -76,6 +76,7 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
       ref={component}
+      className="h-screen"
     >
       <div className="grid min-h-[70vh] grid-cols-1 md:grid-cols-2 items-center">
         <Shapes />
@@ -87,15 +88,15 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
               slice.primary.first_name + " " + slice.primary.last_name
             }
           >
-            <span className="block text-stone-800 whitespace-nowrap">
+            <span className="select-none block text-stone-800 whitespace-nowrap">
               {renderLetters(slice.primary.first_name, "first")}
             </span>
-            <span className="-mt-[.2em] block text-stone-500 whitespace-nowrap">
+            <span className="select-none -mt-[.2em] block text-stone-500 whitespace-nowrap">
               {renderLetters(slice.primary.last_name, "last")}
             </span>
           </h1>
           <span
-            className="job-title block bg-gradient-to-tr from-red-700 via-red-500 to-red-700
+            className="select-none job-title block bg-gradient-to-tr from-red-700 via-red-500 to-red-700
             bg-clip-text text-2xl font-extrabold uppercase tracking-[.2em] text-transparent
             opacity-0 md:text-4xl"
           >

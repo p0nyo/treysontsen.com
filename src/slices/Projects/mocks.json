@@ -3,12 +3,7 @@
 		"__TYPE__": "SharedSliceContent",
 		"variation": "default",
 		"primary": {
-			"title": {
-				"__TYPE__": "FieldContent",
-				"value": "bad",
-				"type": "Text"
-			},
-			"timeline_object": {
+			"project": {
 				"__TYPE__": "GroupContentType",
 				"value": [
 					{
@@ -18,7 +13,7 @@
 								"title",
 								{
 									"__TYPE__": "FieldContent",
-									"value": "solar",
+									"value": "believed",
 									"type": "Text"
 								}
 							],
@@ -30,23 +25,20 @@
 										{
 											"type": "paragraph",
 											"content": {
-												"text": "In do voluptate aliquip veniam culpa incididunt aliquip consectetur reprehenderit dolore. Tempor tempor culpa dolor mollit eu voluptate ea nulla dolore in aliqua fugiat aute minim nostrud."
+												"text": "Duis exercitation do qui et quis amet duis anim est nisi."
 											}
 										}
 									]
-								}
-							],
-							[
-								"direction",
-								{
-									"__TYPE__": "FieldContent",
-									"value": "snow",
-									"type": "Text"
 								}
 							]
 						]
 					}
 				]
+			},
+			"title": {
+				"__TYPE__": "FieldContent",
+				"value": "tip",
+				"type": "Text"
 			}
 		},
 		"items": []
