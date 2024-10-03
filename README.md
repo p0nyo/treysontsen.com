@@ -2,10 +2,12 @@
 
 Still in development.
 
+
 Technologies used:
 - Next.js
-- TailwindCSS
 - TypeScript
+- TailwindCSS
 - Prismic
 - Three.js
 - GSAP (Green Sock Animation Platform)
+- Vercel for deployment
