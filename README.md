@@ -10,5 +10,5 @@ Technologies used:
 - TailwindCSS
 - Three.js
 - GSAP (Green Sock Animation Platform)
-- Prismic for a CMD backend
+- Prismic for a CMS backend
 - Vercel for deployment
