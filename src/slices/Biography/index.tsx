@@ -35,27 +35,38 @@ const Biography = ({ slice }: BiographyProps): JSX.Element => {
         },
       });
 
-      tl.from(".heading-scroll", {
-        opacity: 0,
-        x: -200,
-        duration: 2,
-      })
-        .from(
-          ".description-scroll",
+      tl.fromTo(".heading-scroll", 
+        {
+          opacity: 0, // Starting state
+          x: -200,
+        }, 
+        {
+          opacity: 1, // Ending state
+          x: 0, // Move to original position
+          duration: 2,
+        })
+        .fromTo(".description-scroll", 
           {
-            opacity: 0,
+            opacity: 0, // Starting state
             x: -300,
+          }, 
+          {
+            opacity: 1, // Ending state
+            x: 0, // Move to original position
             duration: 2,
-          },
+          }, 
           "-=1.5"
         )
-        .from(
-          ".image-scroll",
+        .fromTo(".image-scroll", 
           {
-            opacity: 0,
+            opacity: 0, // Starting state
             x: 200,
+          }, 
+          {
+            opacity: 1, // Ending state
+            x: 0, // Move to original position
             duration: 2,
-          },
+          }, 
           "-=1.5"
         );
     }, component);
@@ -69,15 +80,15 @@ const Biography = ({ slice }: BiographyProps): JSX.Element => {
       ref={component}
     >
       <div className="grid gap-x-8 gap-y-6 md:grid-cols-[2fr,1fr]">
-        <Heading className="heading-scroll col-start-1">
+        <Heading className="opacity-0 heading-scroll col-start-1">
           {slice.primary.title}
         </Heading>
-        <div className="description-scroll text-stone-500 prose prose-xl prose-invert col-start-1">
+        <div className="opacity-0 description-scroll text-stone-500 prose prose-xl prose-invert col-start-1">
           <PrismicRichText field={slice.primary.description} />
         </div>
         <PrismicNextImage
           field={slice.primary.image}
-          className="image-scroll row-start-1 max-w-sm md:col-start-2 md:row-end-3"
+          className="opacity-0 image-scroll row-start-1 max-w-sm md:col-start-2 md:row-end-3"
         />
       </div>
     </Bounded>
