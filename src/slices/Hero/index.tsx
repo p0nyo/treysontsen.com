@@ -6,18 +6,20 @@ import { SliceComponentProps } from "@prismicio/react";
 import gsap from "gsap";
 import Bounded from "@/app/components/Bounded";
 import { Shapes } from "@/slices/Hero/Shapes";
-
+import DownwardArrow from "@/slices/Hero/DownwardArrow";
+import { ScrollTrigger } from "gsap/all";
 /**
  * Props for `Hero`.
  */
 export type HeroProps = SliceComponentProps<Content.HeroSlice>;
 
+gsap.registerPlugin(ScrollTrigger);
 /**
  * Component for "Hero" Slices.
  */
 const Hero = ({ slice }: HeroProps): JSX.Element => {
   const component = useRef(null);
-
+  const arrowRef = useRef(null);
   useEffect(() => {
     let ctx = gsap.context(() => {
       const tl = gsap.timeline();
@@ -25,38 +27,47 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
       tl.fromTo(
         ".name-animation",
         {
-          x: -100,
           opacity: 0,
         },
         {
-          x: 0,
-          opacity: 100,
-          rotate: 0,
-          duration: 2,
+          opacity: 1,
+          duration: 3,
           ease: "circ.out",
-          delay: 0.5,
           stagger: {
             each: 0.1,
             from: "random",
           },
         }
-      );
-
-      tl.fromTo(
+      ).fromTo(
         ".job-title",
         {
-          y: -100,
           opacity: 0,
         },
         {
-          y: 0,
-          opacity: 100,
+          opacity: 1,
           duration: 1.5,
           ease: "circ.out",
-        }
+        },
+        "-=3"
       );
     }, component);
     return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: arrowRef.current,
+        start: "bottom 80%", // Starts when the top of the arrow hits the top of the viewport
+        end: "bottom 75%", // Continue for 50 pixels
+        onLeave: () => gsap.to(arrowRef.current, { opacity: 0 }), // Fade out on leave
+        onEnterBack: () => gsap.to(arrowRef.current, { opacity: 1 }), // Fade back in when entering back
+        // markers: true,
+      },
+    });
+    return () => {
+      tl.kill();
+    };
   }, []);
 
   const renderLetters = (name: KeyTextField, key: string) => {
@@ -102,6 +113,9 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
           >
             {slice.primary.tag_line}
           </span>
+        </div>
+        <div ref={arrowRef}>
+          <DownwardArrow />
         </div>
       </div>
     </Bounded>

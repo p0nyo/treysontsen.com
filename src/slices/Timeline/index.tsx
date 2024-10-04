@@ -1,10 +1,14 @@
+'use client';
+
 import { Content, KeyTextField, RichTextField } from "@prismicio/client";
 import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import Bounded from "@/app/components/Bounded";
 import Heading from "@/app/components/Heading";
-import { Fragment } from "react";
+import { useEffect, useRef, Fragment } from "react";
 import { RichTextFunctionSerializer } from "@prismicio/client/richtext";
 import { PI } from "three/webgpu";
+import { gsap } from "gsap";
+
 /**
  * Props for `Timeline`.
  */
@@ -14,13 +18,40 @@ export type TimelineProps = SliceComponentProps<Content.TimelineSlice>;
  * Component for "Timeline" Slices.
  */
 const Timeline = ({ slice }: TimelineProps): JSX.Element => {
+  const component = useRef(null);
+
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: component.current, // Element to trigger the animation
+          start: "top 72%", // Start when the top of the element reaches the center of the viewport
+          end: "bottom 100%", // End when the bottom of the element reaches the center
+          scrub: true, // Animation syncs with scrolling
+          // markers: true,
+        },
+      });
+      tl.from(".heading-scroll", {
+        opacity: 0,
+        x: -200,
+        duration: 2,
+      }).from(".timeline-scroll", {
+        opacity: 0,
+        x: 150,
+        duration: 2,
+      })
+    }, component);
+    return () => ctx.revert();
+  }, []);
+  
   return (
     <Bounded
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
+      ref={component}
     >
-      <Heading>{slice.primary.title}</Heading>
-      <div className="flex flex-col gap-y-3 w-full my-4">
+      <Heading className="heading-scroll">{slice.primary.title}</Heading>
+      <div className="timeline-scroll flex flex-col gap-y-3 w-full my-4">
         <Circle />
         {slice.primary.timeline_object.map((item, key) => (
           <Fragment key={key}>

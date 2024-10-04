@@ -119,9 +119,8 @@ function Geometry({ r, position, geometry, materials }) {
         x: 0,
         y: 0,
         z: 0,
-        duration: 1.0,
-        ease: "elastic.out(1,0,3)",
-        delay: 1,
+        duration: 4,
+        ease: "elastic.out(1,1,3)",
       });
     });
     return () => ctx.revert();
