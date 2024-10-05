@@ -43,6 +43,22 @@
 									"value": "snow",
 									"type": "Text"
 								}
+							],
+							[
+								"dates",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "picture",
+									"type": "Text"
+								}
+							],
+							[
+								"tech",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "feel",
+									"type": "Text"
+								}
 							]
 						]
 					}

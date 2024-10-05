@@ -315,6 +315,26 @@ export interface TimelineSliceDefaultPrimaryTimelineObjectItem {
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   direction: prismic.KeyTextField;
+
+  /**
+   * Dates field in *Timeline → Default → Primary → Timeline Object*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: timeline.default.primary.timeline_object[].dates
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  dates: prismic.KeyTextField;
+
+  /**
+   * Tech field in *Timeline → Default → Primary → Timeline Object*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: timeline.default.primary.timeline_object[].tech
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  tech: prismic.KeyTextField;
 }
 
 /**

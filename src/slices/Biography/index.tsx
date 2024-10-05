@@ -89,6 +89,7 @@ const Biography = ({ slice }: BiographyProps): JSX.Element => {
         <PrismicNextImage
           field={slice.primary.image}
           className="opacity-0 image-scroll row-start-1 max-w-sm md:col-start-2 md:row-end-3"
+          alt=""
         />
       </div>
     </Bounded>

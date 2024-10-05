@@ -47,6 +47,20 @@
                   "label": "Direction",
                   "placeholder": ""
                 }
+              },
+              "dates": {
+                "type": "Text",
+                "config": {
+                  "label": "Dates",
+                  "placeholder": ""
+                }
+              },
+              "tech": {
+                "type": "Text",
+                "config": {
+                  "label": "Tech",
+                  "placeholder": ""
+                }
               }
             }
           }
