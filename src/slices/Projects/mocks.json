@@ -3,7 +3,12 @@
 		"__TYPE__": "SharedSliceContent",
 		"variation": "default",
 		"primary": {
-			"project": {
+			"title": {
+				"__TYPE__": "FieldContent",
+				"value": "tip",
+				"type": "Text"
+			},
+			"project_object": {
 				"__TYPE__": "GroupContentType",
 				"value": [
 					{
@@ -13,7 +18,7 @@
 								"title",
 								{
 									"__TYPE__": "FieldContent",
-									"value": "believed",
+									"value": "bite",
 									"type": "Text"
 								}
 							],
@@ -25,20 +30,23 @@
 										{
 											"type": "paragraph",
 											"content": {
-												"text": "Duis exercitation do qui et quis amet duis anim est nisi."
+												"text": "Voluptate exercitation nostrud ullamco irure sunt velit consectetur esse exercitation sit quis Lorem irure."
 											}
 										}
 									]
+								}
+							],
+							[
+								"tech",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "height",
+									"type": "Text"
 								}
 							]
 						]
 					}
 				]
-			},
-			"title": {
-				"__TYPE__": "FieldContent",
-				"value": "tip",
-				"type": "Text"
 			}
 		},
 		"items": []

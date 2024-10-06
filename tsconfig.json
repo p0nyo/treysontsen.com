@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/slices/Hero/Shapes.jsx", "src/slices/Hero/DownwardArrow.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/slices/Hero/Shapes.jsx", "src/slices/Hero/DownwardArrow.jsx", "src/slices/Biography/ResumeButton.jsx"],
   "exclude": ["node_modules"]
 }

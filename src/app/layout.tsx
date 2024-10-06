@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Urbanist } from "next/font/google";
 import "./globals.css";
+import Header from "./components/Header";
 
-const urbanist = Urbanist({ subsets: ['latin'], display: 'swap'})
+const urbanist = Urbanist({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,9 +17,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="bg-slate-200">
-      <body
-        className={urbanist.className}
-      >
+      <body className={urbanist.className}>
+        <Header />
         {children}
       </body>
     </html>

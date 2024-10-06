@@ -113,10 +113,10 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
             {slice.primary.tag_line}
           </span>
         </div>
-        <div ref={arrowRef}>
+      </div>
+      <div ref={arrowRef} className="flex items-center justify-center">
           <DownwardArrow />
         </div>
-      </div>
     </Bounded>
   );
 };

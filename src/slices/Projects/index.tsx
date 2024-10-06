@@ -1,10 +1,10 @@
 "use client";
 
-import { Content } from "@prismicio/client";
-import { SliceComponentProps } from "@prismicio/react";
+import { Content, KeyTextField, RichTextField } from "@prismicio/client";
+import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import Heading from "@/app/components/Heading";
 import Bounded from "@/app/components/Bounded";
-import { useEffect, useRef } from "react";
+import { Key, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 /**
@@ -32,11 +32,11 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
         opacity: 0,
         x: -200,
         duration: 2,
-      })
+      });
     }, component);
     return () => ctx.revert();
   }, []);
-  
+
   return (
     <Bounded
       data-slice-type={slice.slice_type}
@@ -44,11 +44,36 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
       className="h-screen"
       ref={component}
     >
-      <Heading className="heading-scroll">
-      {slice.primary.title}
-      </Heading>
+      <Heading className="heading-scroll">{slice.primary.title}</Heading>
+      {slice.primary.project_object.map((item) => (
+        <ProjectCard
+        title={item.title}
+        description={item.description}
+        tech={item.tech}
+      />
+      ))}
     </Bounded>
   );
 };
+
+type ProjectCardProps = {
+  title: KeyTextField;
+  description: RichTextField;
+  tech: KeyTextField;
+};
+
+const ProjectCard = ({ title, description, tech }: ProjectCardProps) => {
+  return (
+    <div className="event-card transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl flex flex-col gap-y-2 shadow-md rounded-s p-4">
+      <div className="text-stone-800 font-bold text-xl border-b">{title}</div>
+      <div className="text-stone-600">
+        <PrismicRichText field={description} />
+        <div className="border-t border-gray-300 my-4"></div>
+        <p className="text-stone-400">{tech}</p>
+      </div>
+    </div>
+  );
+};
+
 
 export default Projects;

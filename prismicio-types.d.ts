@@ -73,7 +73,84 @@ export type HomepageDocument<Lang extends string = string> =
     Lang
   >;
 
-export type AllDocumentTypes = HomepageDocument;
+/**
+ * Item in *navbar → Nav Item*
+ */
+export interface NavbarDocumentDataNavItemItem {
+  /**
+   * Label field in *navbar → Nav Item*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: navbar.nav_item[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Link field in *navbar → Nav Item*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: navbar.nav_item[].link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+}
+
+/**
+ * Content for navbar documents
+ */
+interface NavbarDocumentData {
+  /**
+   * Name field in *navbar*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: navbar.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Nav Item field in *navbar*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: navbar.nav_item[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  nav_item: prismic.GroupField<Simplify<NavbarDocumentDataNavItemItem>> /**
+   * Meta Title field in *navbar*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: navbar.meta_title
+   * - **Tab**: SEO and Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+}
+
+/**
+ * navbar document from Prismic
+ *
+ * - **API ID**: `navbar`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type NavbarDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<NavbarDocumentData>,
+    "navbar",
+    Lang
+  >;
+
+export type AllDocumentTypes = HomepageDocument | NavbarDocument;
 
 /**
  * Primary content in *Biography → Default → Primary*
@@ -203,28 +280,38 @@ type HeroSliceVariation = HeroSliceDefault;
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
 /**
- * Item in *Projects → Default → Primary → Project*
+ * Item in *Projects → Default → Primary → Project Object*
  */
-export interface ProjectsSliceDefaultPrimaryProjectItem {
+export interface ProjectsSliceDefaultPrimaryProjectObjectItem {
   /**
-   * Title field in *Projects → Default → Primary → Project*
+   * Title field in *Projects → Default → Primary → Project Object*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: projects.default.primary.project[].title
+   * - **API ID Path**: projects.default.primary.project_object[].title
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   title: prismic.KeyTextField;
 
   /**
-   * Description field in *Projects → Default → Primary → Project*
+   * Description field in *Projects → Default → Primary → Project Object*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: projects.default.primary.project[].description
+   * - **API ID Path**: projects.default.primary.project_object[].description
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
   description: prismic.RichTextField;
+
+  /**
+   * Tech field in *Projects → Default → Primary → Project Object*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: projects.default.primary.project_object[].tech
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  tech: prismic.KeyTextField;
 }
 
 /**
@@ -242,14 +329,16 @@ export interface ProjectsSliceDefaultPrimary {
   title: prismic.KeyTextField;
 
   /**
-   * Project field in *Projects → Default → Primary*
+   * Project Object field in *Projects → Default → Primary*
    *
    * - **Field Type**: Group
    * - **Placeholder**: *None*
-   * - **API ID Path**: projects.default.primary.project[]
+   * - **API ID Path**: projects.default.primary.project_object[]
    * - **Documentation**: https://prismic.io/docs/field#group
    */
-  project: prismic.GroupField<Simplify<ProjectsSliceDefaultPrimaryProjectItem>>;
+  project_object: prismic.GroupField<
+    Simplify<ProjectsSliceDefaultPrimaryProjectObjectItem>
+  >;
 }
 
 /**
@@ -418,6 +507,9 @@ declare module "@prismicio/client" {
       HomepageDocument,
       HomepageDocumentData,
       HomepageDocumentDataSlicesSlice,
+      NavbarDocument,
+      NavbarDocumentData,
+      NavbarDocumentDataNavItemItem,
       AllDocumentTypes,
       BiographySlice,
       BiographySliceDefaultPrimary,
@@ -428,7 +520,7 @@ declare module "@prismicio/client" {
       HeroSliceVariation,
       HeroSliceDefault,
       ProjectsSlice,
-      ProjectsSliceDefaultPrimaryProjectItem,
+      ProjectsSliceDefaultPrimaryProjectObjectItem,
       ProjectsSliceDefaultPrimary,
       ProjectsSliceVariation,
       ProjectsSliceDefault,
