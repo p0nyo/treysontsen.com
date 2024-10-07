@@ -5,8 +5,6 @@ import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import Bounded from "@/app/components/Bounded";
 import Heading from "@/app/components/Heading";
 import { useEffect, useRef, Fragment } from "react";
-import { RichTextFunctionSerializer } from "@prismicio/client/richtext";
-import { PI } from "three/webgpu";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/all";
 
@@ -25,12 +23,12 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
 
   // Animations adjusted for screens larger than 800px, laptop screens
   useEffect(() => {
-    let mm = gsap.matchMedia();
+    const mm = gsap.matchMedia();
 
     mm.add(
       "(min-width: 800px)",
       () => {
-        let ctx = gsap.context(() => {
+        const ctx = gsap.context(() => {
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: component.current, // Element to trigger the animation
@@ -93,12 +91,12 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
 
   // Animations adjusted for phones
   useEffect(() => {
-    let mm = gsap.matchMedia();
+    const mm = gsap.matchMedia();
 
     mm.add(
       "(max-width: 800px)",
       () => {
-        let ctx = gsap.context(() => {
+        const ctx = gsap.context(() => {
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: component.current, // Element to trigger the animation

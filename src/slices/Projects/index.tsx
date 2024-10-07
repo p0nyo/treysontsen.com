@@ -4,7 +4,7 @@ import { Content, KeyTextField, RichTextField } from "@prismicio/client";
 import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import Heading from "@/app/components/Heading";
 import Bounded from "@/app/components/Bounded";
-import { Key, useEffect, useRef, Fragment } from "react";
+import { useEffect, useRef, Fragment } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/all";
 
@@ -21,14 +21,14 @@ gsap.registerPlugin(ScrollTrigger);
 const Projects = ({ slice }: ProjectsProps): JSX.Element => {
   const component = useRef(null);
   useEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: component.current, // Element to trigger the animation
           start: "top 72%",
           end: "bottom 100%",
           scrub: true, // Animation syncs with scrolling
-          markers: true,
+          // markers: true,
         },
       });
       tl.from(".heading-scroll", {

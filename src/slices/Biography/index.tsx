@@ -6,7 +6,6 @@ import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import Bounded from "@/app/components/Bounded";
 import Heading from "@/app/components/Heading";
 import ResumeButton from "@/slices/Biography/ResumeButton";
-import clsx from "clsx";
 import { PrismicNextImage } from "@prismicio/next";
 import { ScrollTrigger } from "gsap/all";
 import { gsap } from "gsap";
@@ -24,7 +23,7 @@ const Biography = ({ slice }: BiographyProps): JSX.Element => {
   const component = useRef(null);
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: component.current, // Element to trigger the animation

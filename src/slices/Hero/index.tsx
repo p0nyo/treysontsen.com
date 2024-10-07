@@ -21,7 +21,7 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
   const component = useRef(null);
   const arrowRef = useRef(null);
   useEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
       tl.fromTo(
