@@ -20,138 +20,130 @@ gsap.registerPlugin(ScrollTrigger);
 const Timeline = ({ slice }: TimelineProps): JSX.Element => {
   const component = useRef(null);
 
-
   // Animations adjusted for screens larger than 800px, laptop screens
   useEffect(() => {
     const mm = gsap.matchMedia();
 
-    mm.add(
-      "(min-width: 800px)",
-      () => {
-        const ctx = gsap.context(() => {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: component.current, // Element to trigger the animation
-              start: "top 73%", // Start when the top of the element reaches the center of the viewport
-              end: "bottom 100%", // End when the bottom of the element reaches the center
-              scrub: true, // Animation syncs with scrolling
-              // markers: true,
+    mm.add("(min-width: 800px)", () => {
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: component.current, // Element to trigger the animation
+            start: "top 73%", // Start when the top of the element reaches the center of the viewport
+            end: "bottom 100%", // End when the bottom of the element reaches the center
+            scrub: true, // Animation syncs with scrolling
+            // markers: true,
+          },
+        });
+        tl.from(".heading-scroll", {
+          opacity: 0,
+          x: -200,
+          duration: 2,
+        })
+          .from(
+            ".timeline-scroll",
+            {
+              opacity: 0,
+              y: 100,
+              duration: 2,
             },
-          });
-          tl.from(".heading-scroll", {
-            opacity: 0,
-            x: -200,
-            duration: 2,
-          })
-            .from(
-              ".timeline-scroll",
-              {
-                opacity: 0,
-                y: 100,
-                duration: 2,
-              },
-              "-=1.5"
-            )
-            .fromTo(
-              ".event-card",
-              {
-                opacity: 0,
-                y: 50,
-              },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 1.5,
-                stagger: 0.5,
-              },
-              "-=1.5"
-            )
-            .fromTo(
-              ".date-scroll",
-              {
-                opacity: 0,
-                y: 50,
-              },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 1.5,
-                stagger: 0.5,
-              },
-              "-=4"
-            );
-        }, component);
-        return () => ctx.revert();
-      }
-    );
+            "-=1.5"
+          )
+          .fromTo(
+            ".event-card",
+            {
+              opacity: 0,
+              y: 50,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1.5,
+              stagger: 0.5,
+            },
+            "-=1.5"
+          )
+          .fromTo(
+            ".date-scroll",
+            {
+              opacity: 0,
+              y: 50,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1.5,
+              stagger: 0.5,
+            },
+            "-=4"
+          );
+      }, component);
+      return () => ctx.revert();
+    });
 
     return () => mm.revert();
   }, []);
-
 
   // Animations adjusted for phones
   useEffect(() => {
     const mm = gsap.matchMedia();
 
-    mm.add(
-      "(max-width: 800px)",
-      () => {
-        const ctx = gsap.context(() => {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: component.current, // Element to trigger the animation
-              start: "top bottom", // Start when the top of the element reaches the center of the viewport
-              end: "bottom 100%", // End when the bottom of the element reaches the center
-              scrub: true, // Animation syncs with scrolling
-              // markers: true,
+    mm.add("(max-width: 800px)", () => {
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: component.current, // Element to trigger the animation
+            start: "top bottom", // Start when the top of the element reaches the center of the viewport
+            end: "bottom 100%", // End when the bottom of the element reaches the center
+            scrub: true, // Animation syncs with scrolling
+            // markers: true,
+          },
+        });
+        tl.from(".heading-scroll", {
+          opacity: 0,
+          x: -200,
+          duration: 1,
+        })
+          .from(
+            ".timeline-scroll",
+            {
+              opacity: 0,
+              y: 100,
+              duration: 1,
             },
-          });
-          tl.from(".heading-scroll", {
-            opacity: 0,
-            x: -200,
-            duration: 1,
-          })
-            .from(
-              ".timeline-scroll",
-              {
-                opacity: 0,
-                y: 100,
-                duration: 1,
-              },
-              "-=1.0"
-            )
-            .fromTo(
-              ".event-card",
-              {
-                opacity: 0,
-                y: 50,
-              },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 1.5,
-                stagger: 0.5,
-              },
-              "-=1.5"
-            )
-            .fromTo(
-              ".date-scroll",
-              {
-                opacity: 0,
-                y: 50,
-              },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 1.5,
-                stagger: 0.5,
-              },
-              "-=4.5"
-            );
-        }, component);
-        return () => ctx.revert();
-      }
-    );
+            "-=1.0"
+          )
+          .fromTo(
+            ".event-card",
+            {
+              opacity: 0,
+              y: 50,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1.5,
+              stagger: 0.5,
+            },
+            "-=1.5"
+          )
+          .fromTo(
+            ".date-scroll",
+            {
+              opacity: 0,
+              y: 50,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1.5,
+              stagger: 0.5,
+            },
+            "-=4.5"
+          );
+      }, component);
+      return () => ctx.revert();
+    });
 
     return () => mm.revert();
   }, []);
@@ -169,7 +161,7 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
         </div>
         {slice.primary.timeline_object.map((item, key) => (
           <Fragment key={key}>
-            <div className="grid grid-cols-[1fr_auto_1fr] gap-x-8 items-start">
+            <div className="grid grid-cols-[1fr_auto_1fr] overflow-hidden gap-x-8 items-start">
               {item.direction === "left" ? (
                 <EventCard
                   heading={item.title}
@@ -183,8 +175,7 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
                   </p>
                 </div>
               )}
-
-                <Pillar />
+              <Pillar />
 
               {item.direction === "right" ? (
                 <EventCard
@@ -214,7 +205,9 @@ const Circle = () => {
 };
 
 const Pillar = () => {
-  return <div className="h-full w-1 overflow-hidden gap-x-8 bg-red-400 mx-auto"></div>;
+  return (
+    <div className="h-full w-1 overflow-hidden gap-x-8 bg-red-400 mx-auto"></div>
+  );
 };
 
 type EventCardProps = {
@@ -226,7 +219,9 @@ type EventCardProps = {
 const EventCard = ({ heading, description, tech }: EventCardProps) => {
   return (
     <div className="event-card transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl flex flex-col gap-y-2 shadow-md rounded-s p-4">
-      <div className="text-stone-800 font-bold sm:text-xl text-xl border-b">{heading}</div>
+      <div className="text-stone-800 font-bold sm:text-xl text-xl border-b">
+        {heading}
+      </div>
       <div className="text-stone-600">
         <PrismicRichText field={description} />
         <div className="border-t border-gray-300 my-4"></div>
