@@ -2,6 +2,8 @@
 
 Work in progress.
 
+A personal website where I showcase my coding journey and projects.
+
 You can find the deployed site [here.](https://www.treysontsen.com)
 
 Technologies used:
