@@ -1,10 +1,8 @@
 # Description
 
-Work in progress.
+Welcome to my personal website where I showcase my coding journey and projects!
 
-A personal website where I showcase my coding journey and projects.
-
-You can find the deployed site [here.](https://www.treysontsen.com)
+You can find the deployed site [here.](https://www.treysontsen.com) (Still a work in progress.)
 
 Technologies used:
 - Next.js
