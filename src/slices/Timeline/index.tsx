@@ -96,7 +96,7 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
     let mm = gsap.matchMedia();
 
     mm.add(
-      "(max-width: 700px)",
+      "(max-width: 800px)",
       () => {
         let ctx = gsap.context(() => {
           const tl = gsap.timeline({
@@ -134,7 +134,7 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
                 duration: 1.5,
                 stagger: 0.5,
               },
-              "-=1.0"
+              "-=1.5"
             )
             .fromTo(
               ".date-scroll",
@@ -148,7 +148,7 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
                 duration: 1.5,
                 stagger: 0.5,
               },
-              "-=1.5"
+              "-=4.5"
             );
         }, component);
         return () => ctx.revert();
@@ -165,8 +165,10 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
       ref={component}
     >
       <Heading className="heading-scroll">{slice.primary.title}</Heading>
-      <div className="timeline-scroll flex flex-col gap-y-3 w-full my-4">
-        <Circle />
+      <div className="timeline-scroll flex flex-col gap-y-3 w-full mt-4">
+        <div className="flex items-center justify-center">
+          <Circle />
+        </div>
         {slice.primary.timeline_object.map((item, key) => (
           <Fragment key={key}>
             <div className="grid grid-cols-[1fr_auto_1fr] gap-x-8 items-start">
@@ -226,7 +228,7 @@ type EventCardProps = {
 const EventCard = ({ heading, description, tech }: EventCardProps) => {
   return (
     <div className="event-card transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl flex flex-col gap-y-2 shadow-md rounded-s p-4">
-      <div className="text-stone-800 font-bold text-xl border-b">{heading}</div>
+      <div className="text-stone-800 font-bold sm:text-xl text-xl border-b">{heading}</div>
       <div className="text-stone-600">
         <PrismicRichText field={description} />
         <div className="border-t border-gray-300 my-4"></div>

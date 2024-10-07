@@ -43,6 +43,14 @@
 									"value": "height",
 									"type": "Text"
 								}
+							],
+							[
+								"date",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "dinner",
+									"type": "Text"
+								}
 							]
 						]
 					}

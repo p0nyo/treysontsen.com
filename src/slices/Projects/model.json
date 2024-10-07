@@ -47,6 +47,13 @@
                   "label": "Tech",
                   "placeholder": ""
                 }
+              },
+              "date": {
+                "type": "Text",
+                "config": {
+                  "label": "Date",
+                  "placeholder": ""
+                }
               }
             }
           }

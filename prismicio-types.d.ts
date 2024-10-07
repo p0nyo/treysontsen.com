@@ -312,6 +312,16 @@ export interface ProjectsSliceDefaultPrimaryProjectObjectItem {
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   tech: prismic.KeyTextField;
+
+  /**
+   * Date field in *Projects → Default → Primary → Project Object*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: projects.default.primary.project_object[].date
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  date: prismic.KeyTextField;
 }
 
 /**
