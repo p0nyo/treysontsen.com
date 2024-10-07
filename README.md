@@ -12,3 +12,9 @@ Technologies used:
 - GSAP (Green Sock Animation Platform)
 - Prismic for a CMS backend
 - Vercel for deployment
+
+TODO
+- Fix navbar links
+- Change mobile layout
+- Add contact links and resume
+- Find better photo
