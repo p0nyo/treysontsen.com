@@ -18,3 +18,4 @@ TODO
 - Change mobile layout
 - Add contact links and resume
 - Find better photo
+- Loading screen
