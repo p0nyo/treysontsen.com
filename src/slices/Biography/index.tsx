@@ -81,7 +81,7 @@ const Biography = ({ slice }: BiographyProps): JSX.Element => {
       data-slice-variation={slice.variation}
       ref={component}
     >
-      <div className="grid gap-x-8 gap-y-6 md:grid-cols-[2fr,1fr]">
+      <div className="biography grid gap-x-8 gap-y-6 md:grid-cols-[2fr,1fr]">
         <Heading className="opacity-0 heading-scroll col-start-1">
           {slice.primary.title}
         </Heading>

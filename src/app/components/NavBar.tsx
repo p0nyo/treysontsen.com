@@ -6,8 +6,8 @@ import { Content, KeyTextField, asLink } from "@prismicio/client";
 import { PrismicNextLink } from "@prismicio/next";
 import Link from "next/link";
 import { MdMenu, MdClose } from "react-icons/md";
-// import Button from "./Button";
 import { usePathname } from "next/navigation";
+// import Biography from "@/slices/Biography";
 
 export default function NavBar({
   navbar,

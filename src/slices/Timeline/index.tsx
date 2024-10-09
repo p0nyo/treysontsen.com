@@ -29,7 +29,7 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: component.current, // Element to trigger the animation
-            start: "top 73%", // Start when the top of the element reaches the center of the viewport
+            start: "top 77%", // Start when the top of the element reaches the center of the viewport
             end: "bottom 100%", // End when the bottom of the element reaches the center
             scrub: true, // Animation syncs with scrolling
             // markers: true,

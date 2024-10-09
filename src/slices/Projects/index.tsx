@@ -25,7 +25,7 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: component.current, // Element to trigger the animation
-          start: "top 72%",
+          start: "top 77%",
           end: "bottom 100%",
           scrub: true, // Animation syncs with scrolling
           // markers: true,
@@ -47,7 +47,8 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
             y: 0,
             duration: 2,
             stagger: 0.5,
-          }, "+=1.5"
+          },
+          "+=1.5"
         )
         .fromTo(
           ".line-scroll",
@@ -71,7 +72,6 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
     <Bounded
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="h-screen"
       ref={component}
     >
       <Heading className="heading-scroll">{slice.primary.title}</Heading>
@@ -79,7 +79,9 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
         {slice.primary.project_object.map((item, key) => (
           <Fragment key={key}>
             <div className="project-scroll flex items-center">
-              <div className="text-stone-700 font-extrabold text-2xl -rotate-90 whitespace-nowrap">{item.date}</div>
+              <div className="flex justify-center items-center w-16 text-stone-700 font-extrabold text-2xl -rotate-90 whitespace-nowrap align-middle">
+                {item.date}
+              </div>
               <ProjectCard
                 title={item.title}
                 description={item.description}
@@ -87,7 +89,7 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
               />
             </div>
             {key < slice.primary.project_object.length - 1 && (
-              <div className="line-scroll border-t-2 border-red-600 z-50"></div>
+              <div className="line-scroll border-t-2 border-red-600 z-40"></div>
             )}
           </Fragment>
         ))}
