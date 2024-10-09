@@ -75,7 +75,7 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
               duration: 1.5,
               stagger: 0.5,
             },
-            "-=4"
+            "-=5"
           );
       }, component);
       return () => ctx.revert();
@@ -139,7 +139,7 @@ const Timeline = ({ slice }: TimelineProps): JSX.Element => {
               duration: 1.5,
               stagger: 0.5,
             },
-            "-=4.5"
+            "-=3.0"
           );
       }, component);
       return () => ctx.revert();
@@ -218,7 +218,7 @@ type EventCardProps = {
 
 const EventCard = ({ heading, description, tech }: EventCardProps) => {
   return (
-    <div className="event-card transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl flex flex-col gap-y-2 shadow-md rounded-s p-4">
+    <div className="event-card flex flex-col gap-y-2 rounded-s p-4">
       <div className="text-stone-800 font-bold sm:text-xl text-xl border-b">
         {heading}
       </div>

@@ -45,10 +45,9 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
           {
             opacity: 1,
             y: 0,
-            duration: 1.5,
-            stagger: 0.8,
-          },
-          "-=1.5"
+            duration: 2,
+            stagger: 0.5,
+          }, "+=1.5"
         )
         .fromTo(
           ".line-scroll",
@@ -59,10 +58,10 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
           {
             opacity: 1,
             y: 0,
-            duration: 1.5,
-            stagger: 0.8,
+            duration: 2,
+            stagger: 0.5,
           },
-          "-=2.5"
+          "-=3.0"
         );
     }, component);
     return () => ctx.revert();
