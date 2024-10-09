@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en" className="bg-slate-200">
       <head>
         <meta name="title" property="og:title" content="Treyson Tsen" />
-        <meta name="image" property="og:image" content="landing-page.jpg" />
+        <meta name="image" property="og:image" content="https://raw.githubusercontent.com/p0nyo/portfolio-website/main/src/app/landing-page.jpg" />
       </head>
       <body className={urbanist.className}>
         <Header />
