@@ -34,13 +34,13 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
       tl.from(".heading-scroll", {
         opacity: 0,
         x: -200,
-        duration: 2,
+        duration: 1,
       })
         .fromTo(
           ".project-scroll",
           {
             opacity: 0,
-            y: 50,
+            y: 100,
           },
           {
             opacity: 1,
@@ -48,7 +48,7 @@ const Projects = ({ slice }: ProjectsProps): JSX.Element => {
             duration: 2,
             stagger: 0.5,
           },
-          "+=1.5"
+          "-=1.0"
         )
         .fromTo(
           ".line-scroll",
