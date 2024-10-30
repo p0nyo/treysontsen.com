@@ -31,10 +31,10 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
         },
         {
           opacity: 1,
-          duration: 3,
+          duration: 1.4,
           ease: "circ.out",
           stagger: {
-            each: 0.1,
+            each: 0.08,
             from: "random",
           },
         }
@@ -45,10 +45,10 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
         },
         {
           opacity: 1,
-          duration: 1.5,
+          duration: 3,
           ease: "circ.out",
         },
-        "-=3"
+        "-=2"
       );
     }, component);
     return () => ctx.revert();

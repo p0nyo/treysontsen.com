@@ -119,7 +119,7 @@ function Geometry({ r, position, geometry, materials }) {
         x: 0,
         y: 0,
         z: 0,
-        duration: 4,
+        duration: 1.6,
         ease: "elastic.out(1,1,3)",
       });
     });
