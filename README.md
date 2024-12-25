@@ -1,3 +1,10 @@
+# TODO
+- [ ] fix navbar links
+- [ ] change mobile layout
+- [ ] add contact links and resume
+- [ ] find better photo
+- [ ] loading screen
+
 # Description
 
 Welcome to my personal website where I showcase my coding journey and projects!
@@ -12,10 +19,3 @@ Technologies used:
 - GSAP (Green Sock Animation Platform)
 - Prismic for a CMS backend
 - Vercel for deployment
-
-TODO
-- Fix navbar links
-- Change mobile layout
-- Add contact links and resume
-- Find better photo
-- Loading screen
