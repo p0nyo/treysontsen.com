@@ -67,7 +67,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .social-link {
-  font-size: clamp(8px, 2vw, 13px);
+  font-size: clamp(8px, 1.56vw, 11px);
   color: #e8e8e0;
   text-decoration: none;
   letter-spacing: 1px;

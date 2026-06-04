@@ -444,7 +444,7 @@ export default function PortraitSection() {
       <div style={{ visibility: playing ? 'hidden' : 'visible' }}>
         <pre
           style={{
-            fontSize: 'clamp(1.5px, 0.5vw, 3px)',
+            fontSize: 'clamp(1.8px, 0.49vw, 3px)',
             lineHeight: '1.15',
             letterSpacing: '0px',
             margin: 0,
