@@ -10,3 +10,7 @@
 - 40L sprint mode
 - proper tetris spin mechanics
 - scoreboard
+<<<<<<< HEAD
+=======
+- implement 7-bag randomizer for tetris, currently its completely random
+>>>>>>> fc84652 (edit: readme)
