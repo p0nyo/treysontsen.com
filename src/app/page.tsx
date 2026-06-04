@@ -16,7 +16,7 @@ const socials = [
 export default function Home() {
   return (
     <main
-      className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 px-8 py-4 min-h-screen"
+      className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 px-8 py-4"
       style={{
         fontFamily: "'Menlo', 'Monaco', 'Courier New', Courier, monospace",
         background: "#0a0a0a",
