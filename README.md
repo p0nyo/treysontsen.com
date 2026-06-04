@@ -1,4 +1,4 @@
-<img width="1065" height="526" alt="image" src="https://github.com/user-attachments/assets/003ed7b8-9096-4ff1-96a6-9e322667877a" />
+<img width="1013" height="469" alt="image" src="https://github.com/user-attachments/assets/c6c3af9a-de6e-46d0-9a3a-05d31c166fdd" />
 
 # treysontsen.com
 - retired old design and oneshot a new design with claude code
