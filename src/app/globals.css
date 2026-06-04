@@ -68,14 +68,14 @@ input[type=number]::-webkit-outer-spin-button {
 
 .social-link {
   font-size: clamp(8px, 2vw, 13px);
-  color: #555;
+  color: #e8e8e0;
   text-decoration: none;
   letter-spacing: 1px;
-  transition: color 0.15s;
 }
 
 .social-link:hover {
-  color: #e8e8e0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .game-link {

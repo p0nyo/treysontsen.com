@@ -475,7 +475,7 @@ export default function PortraitSection() {
               display: 'block',
             }}
           >
-            click to play tetris
+            click here to play tetris
           </button>
         )}
       </div>
