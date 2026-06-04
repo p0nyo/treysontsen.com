@@ -6,6 +6,14 @@
   box-sizing: border-box;
 }
 
+*:focus {
+  outline: none;
+}
+
+a, button, input, select, textarea {
+  -webkit-user-select: none;
+}
+
 body {
   background: #0a0a0a;
   color: #e8e8e0;
@@ -48,17 +56,28 @@ body {
   50% { opacity: 0; }
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .social-link {
   font-size: clamp(8px, 2vw, 13px);
-  color: #e8e8e0;
+  color: #555;
   text-decoration: none;
   letter-spacing: 1px;
-  border-bottom: 1px solid #333;
-  padding-bottom: 2px;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s;
 }
 
 .social-link:hover {
-  color: #fff;
-  border-color: #888;
+  color: #e8e8e0;
+}
+
+.game-link {
+  transition: color 0.15s;
+}
+
+.game-link:hover {
+  color: #e8e8e0 !important;
 }
