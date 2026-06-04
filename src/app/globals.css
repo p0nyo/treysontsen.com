@@ -21,6 +21,10 @@ body {
   margin: 0;
   padding: 0;
   text-transform: lowercase;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 ::-webkit-scrollbar {

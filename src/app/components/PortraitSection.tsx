@@ -316,7 +316,7 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
 
 // ─── Portrait section ──────────────────────────────────────────────────────────
 
-const ASCII_PORTRAIT = `xXxx+;+;++++xxxxxXXXXX+++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+XXXxXxxx++xXxXXXXXxx+++;++;;;;;;+xxXxx+xxxXxxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xxXXXX
+const ASCII_PORTRAIT = `xXxx+;+;++++xxxxxXXXXX+++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+XXXxXxxx++xXxXXXXXxx+++;++;;;;;;+xxXxx+xxxXxxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xxXXXXX
 XxXx+;;++++++xxxxXXXXX+++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxXxxXx+++xxxXxxXXXxx++++;;;:::;;;xxx++++;;++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXX
 XXXx+;;++++++xxxXXXXXX+++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx++xxX++xxxx++;+;;;;:::;+XXXX++::;+x++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXX
 XXXx+++++++++xxxXXXXXX+++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxXxxXXx++++Xxx+++;;;;;:::;xXXX+++;;+xx++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXX
@@ -327,8 +327,8 @@ XXX+++++++++xxxxXXXXXxx+++++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 XXX+++++++++xxxxXXXXXx++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+++xXXXXx++++++xXXXXxx++;++;;;+++++++++;;;;;;;+;+++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xxXXXXX
 XXX+++++++++xxxxXXXXXx++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx;++XXx++++xxxXXXXXXx+++;;;;;++++++;;;;;;;;;;;+;+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXX
 XXX+++++++++xxxxXXXXXxx+++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+;+XXx++xXXXXXXXXXxx++++;;;;+++;;;;;;;;;;;+;++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXX
-XXx+++++++++xxxXXXXXXx++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXXXXXXXXXXxx++++++;;++;;;;;;;;;;;;+++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXX
-XXx++++++++xxxxXXXXXXxx+++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxx+++++++++;;;;;;;;;;;+;++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXX
+XXx+++++++++xxxXXXXXXx++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXXXXXXXXXXxx++++++;;++;;;;;;;;;;;;+++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXXX
+XXx++++++++xxxxXXXXXXxx+++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxx+++++++++;;;;;;;;;;;+;++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXXX
 XXx++++++++xxxxXXXXXXx++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxx++x++xx++;;;;;;;;;;+++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXX
 XXx++++++++xxxxXXXXXXxx+++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+x+x+x++x+;;;;;;;;;+xXXxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+xxXXXXXX
 XXx++++++++xxxxXXXXXXx++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxx+x+++xx+;;;;;;;;++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxXXXXXXX
@@ -338,9 +338,9 @@ Xx+++++++++xxxxXXXXXXx++++++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 Xx+;+++++++xxxxXXXXXXx+++++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx++x+xx++;;;+xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+xXXXXXXX
 Xx++;++++++xxxxXXXXXxx+++++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxXXXXXXXXXXXXxxXx+:::;:        :::::.::.   .:;xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX++xXXXXXXX
 Xx+++++++++xxxxXXXXXxx+++++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx+++++++;;;;;;;:::::::......                                         ;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx++xXXXXXXX
-Xx++++++++xxxxxXXXXXx++++++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+;.                                                                          .xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxx+++XXXXXXXX
+Xx++++++++xxxxxXXXXXx++++++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+;.                                                                          .xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxx+++XXXXXXX
 Xx++++++++xxxxxXXXXXxx+++++xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX+.                                                                             +XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxx+++xXXXXXXXX
-Xx++++++++xxxxxXXXXXxx+++++xXXXXXXXXXXXXxxxxxXXXXXXXXXXXXXXXXXXXX                                                                              :xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxxx+++++XXXXXXXXXX
+Xx++++++++xxxxxXXXXXxx+++++xXXXXXXXXXXXXxxxxxXXXXXXXXXXXXXXXXXXXX                                                                              :xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxxx+++++XXXXXXXXXXX
 Xx++++++++xxxxxXXXXXxx+++++xXXXXXXXXXXXXXx++++++++xxxxxXXXXXXXXX:                                                                              ++xxXXXXXXXXXXXXXXXXXxxxXxxxxxxxxxx+++++++++++XXXXXXXXXXXX
 Xx++++++++xxxxxXXXXXx++++++xXXXXXXXXXXXXXXXXx+++;+;++++++++++xx;                                                                             .+xxxxXXXXXXXXXXXXXXXXXxxx+++++++++++++++++xxXXXXXXXXXXXXXXX
 Xx++++++++xxxxxXXXXXxx+++++XXXXXXXXXXXXXXXXXXXXXXXxx++++;++++xx                                                                              xXXXXXXXXXXXXXXXXXXXXXXXXXXXx++++++++xxXXXXXXXXXXXXXXXXXXXXX
@@ -365,7 +365,7 @@ x++++++++++xxxXXXXXxx++++++++++++++xXXXXXXXXXXXx++;;;;;                         
 ++++++++xxxxxxXXXXXXXXXXXXXXXXXXXXXXXXXXXx+XXXXXXxxx+++;;;;;:::::...                                                                              ;+;;;:::::::::::::::::;;;;;;++++++++xxxxXXXXXXXXXXXXXXX
 ++++++++xxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxx+++++;;;;;;:::::::...                                                                                  :+xxxxxxxxx++++;;;:::::::::::::::;;;;;;;;+++++xxxXXXXXXX
 ++;++xXXXXXXXXXXXXXXXXXXXXXXXXXXxx++++;;;:::::::::::.:..... .  ......                                      ..;+;.                                :++++++xxxxxxxxxxXxxxx++++;;;::::.:::::::;;;;;+++++++++x
-++xXXXXXXXXXXXXXXXXXXXXXxxx+++;;;;;;::::::::..:...........:::;;;++++;:                                    .;;+xxxx++++;;;;:.                     .::::::;;;;;;++++++x+xxxxxxxxxXxx+++;;;:::::::::::;;;;;++
+++xXXXXXXXXXXXXXXXXXXXXXxxx+++;;;;;;::::::::..:...........:::;;;++++;:                                    .;;+xxxx++++;;;;:.                     .::::::;;;;;;++++++x+xxxxxxxxxXxx+++;;;:::::::::::;;;;;+
 XXXXXXXXXXXXXXXXxx+++;;;;;::::::::::::.:.......::::;;;+++++++++++;:.                                   .;+++++xxxx++++++;;::.       ..        .++xxx+++++;;;;;:::;;;;;;+++++++xxxxxxxxxxxxxx+++;;;:::::::
 XXXXXXXXxx++++;;;;;:::::::::..:.:...:::::;;;;+++++++++++;;;:::::..                                  ;;;+++++++++++++++++;;;;:::::::::::;:    .::;;;;++++++xxxxxxx+++;;;;:::;;;;;+++++++++xxxxxxXXXXxx+++;
 XXx+++;;;;;:::::::.:........::::;;;+++++++++++;;;;:::::......::::..                               .:+++++++++++++++++++;;;;;::::++++;::;;:  :;;;;;;;;:::::;;;;;+++++xxxxxxx+++;;;;;::;;;;;;+++++++xxxxxxX
@@ -381,7 +381,7 @@ XXx+++;;;;;:::::::.:........::::;;;+++++++++++;;;;:::::......::::..             
 ..............::::::;;;+++xxx+++;;::::::::.................... .                      :++++++++++++;;;::...:::::::::::;;;;;;;;:::::.   .::::::::::::::::::::::::::::::::::::::::::::::::::::;:;;:;:;;;;;;
 .    ..:::::::;;+++xx+++;;;:::::::.:............ .....                                 :+++++++++++;;;;:::.......:::::::;;;;;;;;;::::..:+Xxxxx++++;;;;;::::::::::::::::::::::::::::::::::::::::::;:::;:;;
 ......:::;++++++;;;::::.:..:................ .                                        .:;++++++++++++;;;;:::..     ...::::;;;;;;:::.. :;+xXXXXXXXXXXXXXxxx++++;;;;:::::::::::::::::::::::::::::::::::::::
-...::.::::::::.:................... . .                          ..::;;;.             ;++x+++++++++++++++;;;;;::...      ....:::...      :::;;;;;;++++xxXXXXXXXXXXXXXxx++++;;;;;::::::::::::::::::::::::::::
+...::.::::::::.:................... . .                          ..::;;;.             ;++x+++++++++++++++;;;;;::...      ....:::...      :::;;;;;;++++xxXXXXXXXXXXXXXxx++++;;;;;:::::::::::::::::::::::::
 ............................. .                        ...::;;;++xxxXXxx;:          ;;;+x+++++++++++++;;;;;:::..                      :+xxxx++++++;;;;;;;;++++xxXXXXXXXXXXXXxx+++;;;;;;;;;:;:::::::::::::
         ......... . .                         ....::;;++xxXXXXXxx+++;;;;::          ;+++xxx++++++++++++++;;;;::.                      :;++++xxxXXXXXXXxx++++;;;;;;;;+++xxXXXXXXXXXXXXXxxx++++;;;;;;:;::::
 .                                   . ...::;;+++xxxXXXxx+++;;;;:::::;;;;+++         :++x++++++++++++++++++++;;::.                   .;+++;;;;;:;;;;;+++xxxXXXXXXXxx++++;;;;;;++++xXXXXXXXXXXXXXxx++++;;;;
@@ -456,7 +456,7 @@ export default function PortraitSection() {
           {ASCII_PORTRAIT}
         </pre>
         {isMobile ? (
-          <span style={{ fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace", fontSize: '11px', color: '#444', fontStyle: 'italic', paddingTop: '6px', display: 'block' }}>
+          <span style={{ fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace", fontSize: 'clamp(8px, 2vw, 13px)', color: '#444', fontStyle: 'italic', paddingTop: '6px', display: 'block' }}>
             view on desktop to play tetris
           </span>
         ) : (
