@@ -62,10 +62,10 @@ export default function Home() {
             spending most of my time building things that will hopefully make me rich enough to one day buy my life back; obsessed with productivity, systems and tracking anything that I can get my hands on
           </p>
           <p style={{ fontSize: "clamp(8px, 2vw, 13px)", lineHeight: "1.7", margin: 0, color: "#666660" }}>
-            prev. patty flipper @ mcdonalds and computer science major @ the university of auckland while working on many volunteer software projects for uni clubs and non-profits 
+            // prev. patty flipper @ mcdonalds and computer science major @ the university of auckland while working on many volunteer software projects for uni clubs and non-profits 
           </p>
           <p style={{ fontSize: "clamp(8px, 2vw, 13px)", lineHeight: "1.7", margin: 0, color: "#666660" }}>
-            usually playing <a href="https://jstris.jezevec10.com/u/ponyoponyo" target="_blank" rel="noopener noreferrer" tabIndex={-1} style={{ color: 'inherit', textDecoration: 'underline', userSelect: 'text', WebkitUserSelect: 'text' }}>tetris</a> or piano in my free time and snowboarding the peaks in the south island during the winter<span className="cursor" />
+            // usually playing <a href="https://jstris.jezevec10.com/u/ponyoponyo" target="_blank" rel="noopener noreferrer" tabIndex={-1} style={{ color: 'inherit', textDecoration: 'underline', userSelect: 'text', WebkitUserSelect: 'text' }}>tetris</a> or piano in my free time and snowboarding the peaks in the south island during the winter<span className="cursor" />
           </p>
         </section>
 
