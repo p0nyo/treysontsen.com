@@ -8,9 +8,10 @@ const ASCII_NAME = `   __                                      __
              /____/`;
 
 const socials = [
+  { label: "twitter", href: "https://x.com/98tsuj98", symbol: "[x]" },
   { label: "github", href: "https://github.com/p0nyo", symbol: "[gh]" },
-  { label: "instagram", href: "https://www.instagram.com/tsennpai/", symbol: "[ig]" },
   { label: "linkedin", href: "https://www.linkedin.com/in/tsen", symbol: "[li]" },
+  { label: "instagram", href: "https://www.instagram.com/tsennpai/", symbol: "[ig]" },
 ];
 
 export default function Home() {
