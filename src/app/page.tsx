@@ -178,14 +178,14 @@ export default function Home() {
         {/* Bio */}
         <section style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           <p style={{ fontSize: "clamp(8px, 2vw, 13px)", lineHeight: "1.7", margin: 0, color: "#c8c8c0" }}>
-            > swe @ visa based in auckland, nz. previously a computer science major from university of auckland while working the grills at mcdonalds. i spend most of my time building things, ideally those that make me rich. obsessed with productivity, systems and tracking everything that i can. i enjoy snowboarding and playing tetris too #jirahater
+            {'>'} swe @ visa based in auckland, nz. previously a computer science major from university of auckland while working the grills at mcdonalds. i spend most of my time building things, ideally those that make me rich. obsessed with productivity, systems and tracking everything that i can. i enjoy snowboarding and playing tetris too #jirahater
           </p>
         </section>
 
         {/* Currently working on */}
         <section style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           <p style={{ fontSize: "clamp(8px, 2vw, 13px)", lineHeight: "1.7", margin: 0, color: "#c8c8c0" }}>
-            > currently a tech lead for a university esports club and building out a website for a photography brand<span className="cursor" />
+            {'>'} currently a tech lead for a university esports club and building out a website for a photography brand<span className="cursor" />
           </p>
         </section>
 
