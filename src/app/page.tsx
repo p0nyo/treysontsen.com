@@ -1,4 +1,6 @@
 import PortraitSection from "./components/PortraitSection";
+import Clock from "./components/Clock";
+import DayOfYear from "./components/DayOfYear";
 
 const ASCII_NAME = `   __                                      __
   / /_________  __  ___________  ____     / /_________  ____
@@ -23,6 +25,8 @@ export default function Home() {
         color: "#e8e8e0",
       }}
     >
+      <Clock />
+      <DayOfYear />
       <PortraitSection />
 
       {/* Bottom on mobile, right on desktop — info */}
