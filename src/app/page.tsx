@@ -56,7 +56,7 @@ export default function Home() {
         {/* Bio */}
         <section style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2rem" }}>
           <p style={{ fontSize: "clamp(8px, 2vw, 13px)", lineHeight: "1.7", margin: 0, color: "#c8c8c0" }}>
-            curr. software engineer @ visa, tech lead @ uoacs and building out a website for the lovevisuals photography brand
+            curr. software engineer @ visa, tech lead @ auec and building out a website for the lovevisuals photography brand
           </p>
           <p style={{ fontSize: "clamp(8px, 2vw, 13px)", lineHeight: "1.7", margin: 0, color: "#c8c8c0" }}>
             spending most of my time building things that will hopefully make me rich enough to one day buy my life back; obsessed with productivity, systems and tracking anything that I can get my hands on
