@@ -44,10 +44,10 @@ body {
 .cursor {
   display: inline-block;
   width: 0.6em;
-  height: 1.3em;
+  height: 1.7em;
   background: #e8e8e0;
   margin-left: 2px;
-  vertical-align: text-bottom;
+  vertical-align: bottom;
   animation: blink 1.5s step-start infinite;
 }
 
