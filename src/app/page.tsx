@@ -16,7 +16,7 @@ const socials = [
 export default function Home() {
   return (
     <main
-      className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 px-8 py-4"
+      className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 px-8 py-4 min-h-screen"
       style={{
         fontFamily: "'Menlo', 'Monaco', 'Courier New', Courier, monospace",
         background: "#0a0a0a",
@@ -39,8 +39,9 @@ export default function Home() {
       >
         {/* Name in ASCII */}
         <pre
+          className="ascii-name"
           style={{
-            fontSize: "clamp(3.5px, 2.5vw, 15px)",
+            fontSize: "clamp(1px, 2.5vw, 15px)",
             lineHeight: "1.3",
             margin: 0,
             color: "#e8e8e0",

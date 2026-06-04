@@ -43,6 +43,9 @@ body {
   .portrait-wrap {
     align-self: flex-start;
   }
+  .ascii-name {
+    font-size: clamp(1px, 1.82vw, 15px) !important;
+  }
 }
 
 .cursor {
