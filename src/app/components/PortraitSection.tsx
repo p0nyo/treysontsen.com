@@ -455,7 +455,11 @@ export default function PortraitSection() {
         >
           {ASCII_PORTRAIT}
         </pre>
-        {!isMobile && (
+        {isMobile ? (
+          <span style={{ fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace", fontSize: '11px', color: '#444', fontStyle: 'italic', paddingTop: '6px', display: 'block' }}>
+            view on desktop to play tetris
+          </span>
+        ) : (
           <button
             onClick={() => setPlaying(true)}
             className="game-link"

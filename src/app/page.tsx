@@ -27,7 +27,6 @@ export default function Home() {
 
       {/* Bottom on mobile, right on desktop — info */}
       <div
-        className="w-full md:w-auto"
         style={{
           flex: "1 1 0",
           display: "flex",
@@ -35,6 +34,7 @@ export default function Home() {
           justifyContent: "flex-start",
           gap: "2rem",
           maxWidth: "560px",
+          width: "100%",
         }}
       >
         {/* Name in ASCII */}
@@ -51,15 +51,17 @@ export default function Home() {
           {ASCII_NAME}
         </pre>
 
+        {/* Bio, currently, links — capped to name width */}
+        <div style={{ maxWidth: "clamp(0px, 72vw, 560px)" }}>
         {/* Bio */}
-        <section style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <section style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "2rem" }}>
           <p style={{ fontSize: "clamp(8px, 2vw, 13px)", lineHeight: "1.7", margin: 0, color: "#c8c8c0" }}>
             {'>'} swe @ visa based in auckland, nz. previously a computer science major from the university of auckland while working the grills at mcdonalds. spending most of my time building things that can hopefully make me rich. obsessed with productivity, systems and tracking everything that i can. i enjoy snowboarding and playing tetris too #jirahater
           </p>
         </section>
 
         {/* Currently working on */}
-        <section style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <section style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "2rem" }}>
           <p style={{ fontSize: "clamp(8px, 2vw, 13px)", lineHeight: "1.7", margin: 0, color: "#c8c8c0" }}>
             {'>'} currently a tech lead for a university esports club and building out a website for a photography brand<span className="cursor" />
           </p>
@@ -81,6 +83,7 @@ export default function Home() {
             ))}
           </div>
         </section>
+        </div>
       </div>
     </main>
   );
