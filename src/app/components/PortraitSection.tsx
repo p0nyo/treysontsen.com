@@ -747,8 +747,8 @@ export default function PortraitSection() {
           {ASCII_PORTRAIT}
         </pre>
         {isMobile ? (
-          <span style={{ fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace", fontSize: 'clamp(8px, 2vw, 13px)', color: '#444', fontStyle: 'normal', paddingTop: '6px', display: 'block' }}>
-            view on desktop to play tetris
+          <span style={{ fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace", fontSize: 'clamp(7px, 1.6vw, 10px)', color: '#444', fontStyle: 'normal', paddingTop: '6px', display: 'block' }}>
+{'// view on desktop to play tetris'}
           </span>
         ) : (
           <button
