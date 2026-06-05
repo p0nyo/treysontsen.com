@@ -303,10 +303,10 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         </label>
       </div>
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <button tabIndex={-1} onClick={onExit} className="game-link" style={{ background: 'none', border: 'none', color: '#555', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer', padding: 0, fontStyle: 'italic' }}>
+        <button tabIndex={-1} onClick={onExit} className="game-link" style={{ background: 'none', borderTop: 'none', borderLeft: 'none', borderRight: 'none', color: '#555', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer', padding: 0, fontStyle: 'normal' }}>
           ← back to portrait
         </button>
-        <button tabIndex={-1} onClick={() => { if (usingMine) { setBinds(DEFAULT_BINDS); setDas(167); setArr(33); } else { setBinds(MY_BINDS); setDas(90); setArr(10); } }} className="game-link" style={{ background: 'none', border: 'none', color: '#555', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer', padding: 0, fontStyle: 'italic' }}>
+        <button tabIndex={-1} onClick={() => { if (usingMine) { setBinds(DEFAULT_BINDS); setDas(167); setArr(33); } else { setBinds(MY_BINDS); setDas(90); setArr(10); } }} className="game-link" style={{ background: 'none', borderTop: 'none', borderLeft: 'none', borderRight: 'none', color: '#555', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer', padding: 0, fontStyle: 'normal' }}>
           {usingMine ? 'use default' : 'use my keybinds'}
         </button>
       </div>
@@ -456,7 +456,7 @@ export default function PortraitSection() {
           {ASCII_PORTRAIT}
         </pre>
         {isMobile ? (
-          <span style={{ fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace", fontSize: 'clamp(8px, 2vw, 13px)', color: '#444', fontStyle: 'italic', paddingTop: '6px', display: 'block' }}>
+          <span style={{ fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace", fontSize: 'clamp(8px, 2vw, 13px)', color: '#444', fontStyle: 'normal', paddingTop: '6px', display: 'block' }}>
             view on desktop to play tetris
           </span>
         ) : (
@@ -465,12 +465,14 @@ export default function PortraitSection() {
             className="game-link"
             style={{
               background: 'none',
-              border: 'none',
+              borderTop: 'none',
+              borderLeft: 'none',
+              borderRight: 'none',
               color: '#444',
               fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
               fontSize: '11px',
               cursor: 'pointer',
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               padding: '6px 0 0 0',
               display: 'block',
             }}

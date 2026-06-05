@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "treysontsen.com",
   description: "personal website for treyson tsen",
   openGraph: {
+    type: "website",
     title: "treysontsen.com",
     description: "personal website for treyson tsen",
     url: "https://treysontsen.com",

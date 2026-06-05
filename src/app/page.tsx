@@ -1,5 +1,6 @@
 import PortraitSection from "./components/PortraitSection";
 import FriendLink from "./components/FriendLink";
+import BioSection from "./components/BioSection";
 
 const ASCII_NAME = `   __                                      __
   / /_________  __  ___________  ____     / /_________  ____
@@ -56,21 +57,7 @@ export default function Home() {
 
         {/* Bio, currently, links — capped to name width */}
         <div style={{ maxWidth: "clamp(0px, 72vw, 560px)" }}>
-        {/* Bio */}
-        <section style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2rem" }}>
-          <p style={{ fontSize: "clamp(8px, 1.56vw, 11px)", lineHeight: "1.7", margin: 0, color: "#c8c8c0" }}>
-            curr. software engineer @ visa, tech lead @ <a href="https://auec.club/" target="_blank" rel="noopener noreferrer" tabIndex={-1} className="tooltip" data-tooltip="auec club website" style={{ color: 'inherit', textDecoration: 'underline', textUnderlineOffset: '3px', userSelect: 'text', WebkitUserSelect: 'text' }}>auec</a> and building out a website for the <a href="https://www.instagram.com/_lovevisuals_/" target="_blank" rel="noopener noreferrer" tabIndex={-1} className="tooltip" data-tooltip="lovevisuals instagram portfolio" style={{ color: 'inherit', textDecoration: 'underline', textUnderlineOffset: '3px', userSelect: 'text', WebkitUserSelect: 'text' }}>lovevisuals</a> photography brand
-          </p>
-          <p style={{ fontSize: "clamp(8px, 1.56vw, 11px)", lineHeight: "1.7", margin: 0, color: "#c8c8c0" }}>
-            spending most of my time building things that will hopefully make me rich enough to one day buy my life back; obsessed with productivity, systems and tracking anything that I can get my hands on
-          </p>
-          <p style={{ fontSize: "clamp(8px, 1.56vw, 11px)", lineHeight: "1.7", margin: 0, color: "#666660" }}>
-            // prev. patty flipper @ mcdonalds and computer science major @ the university of auckland while working on many volunteer software projects for uni clubs and non-profits 
-          </p>
-          <p style={{ fontSize: "clamp(8px, 1.56vw, 11px)", lineHeight: "1.7", margin: 0, color: "#666660" }}>
-            // usually playing <a href="https://jstris.jezevec10.com/u/ponyoponyo" target="_blank" rel="noopener noreferrer" tabIndex={-1} className="tooltip" data-tooltip="my jstris profile" style={{ color: 'inherit', textDecoration: 'underline', userSelect: 'text', WebkitUserSelect: 'text' }}>tetris</a> or piano in my free time and snowboarding the peaks in the south island during the winter<span className="cursor" />
-          </p>
-        </section>
+        <BioSection />
 
         {/* Social links */}
         <section style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -81,7 +68,7 @@ export default function Home() {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-link tooltip"
+                className="social-link tooltip inline-link"
                 data-tooltip={s.tooltip}
               >
                 {s.symbol} {s.label}
@@ -91,7 +78,7 @@ export default function Home() {
         </section>
         </div>
       </div>
-      <div style={{
+      <div className="widget" style={{
         position: 'fixed',
         bottom: '1.2rem',
         left: '1.5rem',
@@ -100,7 +87,7 @@ export default function Home() {
         color: '#333',
         userSelect: 'none',
       }}>
-        © {new Date().getFullYear()} treyson tsen, inspired by <a href="https://www.instagram.com/morilliu/" target="_blank" rel="noopener noreferrer" className="tooltip" data-tooltip="look at her terminal website reel" style={{ color: 'inherit', textDecoration: 'underline', textUnderlineOffset: '3px' }}>@morilliu</a>
+        © {new Date().getFullYear()} treyson tsen, inspired by <a href="https://www.instagram.com/morilliu/" target="_blank" rel="noopener noreferrer" className="tooltip inline-link" data-tooltip="look at her terminal website reel" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '0.5px solid currentColor' }}>@morilliu</a>
       </div>
       <FriendLink />
     </main>

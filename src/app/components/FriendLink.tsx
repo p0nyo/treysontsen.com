@@ -1,15 +1,22 @@
 'use client';
 
+import { useRef } from 'react';
+
 const FRIENDS = [
   'https://www.watshisname-stuutzer.com/',
   'https://blackpri0r.dev/',
+  'https://my-portfolio-tau-smoky-10.vercel.app/',
+  'https://www.stastigay.com/',
+  'https://yush9.dev/#home',
 ];
 
 export default function FriendLink() {
+  const index = useRef(Math.floor(Math.random() * FRIENDS.length));
+
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    const url = FRIENDS[Math.floor(Math.random() * FRIENDS.length)];
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(FRIENDS[index.current], '_blank', 'noopener,noreferrer');
+    index.current = (index.current + 1) % FRIENDS.length;
   };
 
   return (
@@ -25,9 +32,9 @@ export default function FriendLink() {
       my <a
         href="#"
         onClick={handleClick}
-        className="tooltip"
-        data-tooltip="click for a portfolio, randomly selected"
-        style={{ color: 'inherit', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+        className="tooltip inline-link"
+        data-tooltip="randomly selects a portfolio"
+        style={{ color: 'inherit', textDecoration: 'none', borderBottom: '0.5px solid currentColor' }}
       >
         friends
       </a> also have websites
