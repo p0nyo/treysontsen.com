@@ -523,7 +523,7 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
             <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,10,10,0.88)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', zIndex: 5 }}>
               {finishTime != null ? (
                 <>
-                  <span style={{ fontSize: '12px', color: '#e8e8e0' }}>40L complete</span>
+                  <span style={{ fontSize: '12px', color: '#e8e8e0', textTransform: 'none' }}>40L complete</span>
                   <span style={{ fontSize: '13px', color: '#d4d4cc' }}>{formatTime(finishTime)}</span>
                   <span style={{ fontSize: '11px', color: '#555' }}>press <strong style={{ color: '#888' }}>r</strong> to retry</span>
                 </>
@@ -559,8 +559,8 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         </div>
       </div>
       <div style={{ fontSize: '12px', color: '#888', display: 'flex', gap: '1rem', position: 'relative', zIndex: 7 }}>
-        <button tabIndex={-1} onClick={openSettings} className="game-link" style={{ ...BTN, fontSize: '12px', color: '#555' }}>settings</button>
-        <button tabIndex={-1} onClick={() => { const next = mode === 'zen' ? '40l' : 'zen'; setMode(next as 'zen' | '40l'); reset(); }} className="game-link tooltip" data-tooltip={mode === 'zen' ? 'switch to 40L mode' : 'switch to zen mode'} style={{ ...BTN, fontSize: '12px', color: '#555' }}>mode: {mode === '40l' ? '40L' : 'zen'}</button>
+        <button tabIndex={-1} onClick={openSettings} className="game-link tooltip" data-tooltip="view/edit keybinds" style={{ ...BTN, fontSize: '12px', color: '#555' }}>settings</button>
+        <button tabIndex={-1} onClick={() => { const next = mode === 'zen' ? '40l' : 'zen'; setMode(next as 'zen' | '40l'); reset(); }} className="game-link tooltip" data-tooltip={mode === 'zen' ? 'switch to 40L mode' : 'switch to zen mode'} style={{ ...BTN, fontSize: '12px', color: '#555', textTransform: 'none' }}>mode: {mode === '40l' ? '40L' : 'zen'}</button>
       </div>
       <div style={{ fontSize: '11px', color: '#333' }}>{'// sorry no t-spins atm'}</div>
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
