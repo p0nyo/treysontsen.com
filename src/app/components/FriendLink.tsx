@@ -8,6 +8,7 @@ const FRIENDS = [
   'https://my-portfolio-tau-smoky-10.vercel.app/',
   'https://www.stastigay.com/',
   'https://yush9.dev/#home',
+  'https://violetchen.dev/',
 ];
 
 export default function FriendLink() {
