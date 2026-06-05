@@ -3,10 +3,25 @@
 import { useState } from 'react';
 
 const socials = [
-  { label: "twitter", href: "https://x.com/98tsuj98", appHref: "twitter://user?screen_name=98tsuj98", symbol: "[x]", tooltip: "documenting things i build" },
-  { label: "github", href: "https://github.com/p0nyo", appHref: null, symbol: "[gh]", tooltip: "projects and (private) notes" },
-  { label: "linkedin", href: "https://www.linkedin.com/in/tsen", appHref: "linkedin://in/tsen", symbol: "[li]", tooltip: "semi-professional career profile" },
-  { label: "instagram", href: "https://www.instagram.com/bigredtreyson/", appHref: "instagram://user?username=bigredtreyson", symbol: "[ig]", tooltip: "posting film of my friends/life" },
+  {
+    label: "twitter", href: "https://x.com/98tsuj98", appHref: "twitter://user?screen_name=98tsuj98",
+    iosStore: "https://apps.apple.com/app/x/id333903271",
+    androidStore: "https://play.google.com/store/apps/details?id=com.twitter.android",
+    symbol: "[x]", tooltip: "documenting things i build",
+  },
+  { label: "github", href: "https://github.com/p0nyo", appHref: null, iosStore: null, androidStore: null, symbol: "[gh]", tooltip: "projects and (private) notes" },
+  {
+    label: "linkedin", href: "https://www.linkedin.com/in/tsen", appHref: "linkedin://in/tsen",
+    iosStore: "https://apps.apple.com/app/linkedin/id288429040",
+    androidStore: "https://play.google.com/store/apps/details?id=com.linkedin.android",
+    symbol: "[li]", tooltip: "semi-professional career profile",
+  },
+  {
+    label: "instagram", href: "https://www.instagram.com/bigredtreyson/", appHref: "instagram://user?username=bigredtreyson",
+    iosStore: "https://apps.apple.com/app/instagram/id389801252",
+    androidStore: "https://play.google.com/store/apps/details?id=com.instagram.android",
+    symbol: "[ig]", tooltip: "posting film of my friends/life",
+  },
 ];
 
 export default function SocialLinks() {
@@ -27,7 +42,38 @@ export default function SocialLinks() {
 
   const openInApp = () => {
     if (!pending?.appHref) return;
-    window.location.href = pending.appHref;
+    const ua = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isAndroid = /Android/.test(ua);
+    const storeUrl = isIOS ? pending.iosStore : isAndroid ? pending.androidStore : null;
+
+    // use iframe so Safari fails silently instead of showing "invalid URL" error
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = pending.appHref;
+    document.body.appendChild(iframe);
+    setTimeout(() => { if (document.body.contains(iframe)) document.body.removeChild(iframe); }, 3000);
+
+    if (storeUrl) {
+      let elapsed = 0;
+      let interval: ReturnType<typeof setInterval>;
+
+      // tick elapsed only while page is visible — pauses if OS prompt is showing
+      interval = setInterval(() => {
+        if (!document.hidden) elapsed += 100;
+        if (elapsed >= 1500) {
+          clearInterval(interval);
+          // only redirect if app didn't open (page never went hidden)
+          if (!document.hidden) window.location.href = storeUrl;
+        }
+      }, 100);
+
+      // if app opened, page goes hidden — cancel everything
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) clearInterval(interval);
+      }, { once: true });
+    }
+
     setPending(null);
   };
 
