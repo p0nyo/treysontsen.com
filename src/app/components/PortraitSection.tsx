@@ -396,6 +396,7 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         <span>score: {score}</span>
         <span>lines: {lines}</span>
       </div>
+      <div style={{ fontSize: '11px', color: '#333' }}>{'// sorry no t-spins or any spins atm'}</div>
       {over && <div style={{ fontSize: '12px', color: '#e8e8e0' }}>game over — press <strong>r</strong> to restart</div>}
       <div style={{ fontSize: '11px', color: '#444', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
         {usingMine
