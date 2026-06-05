@@ -53,7 +53,7 @@ export default function BioSection() {
         </p>
         <p style={{ ...LINE_STYLE, color: "transparent" }}>&nbsp;</p>
         <p style={{ ...LINE_STYLE, color: "#666660" }}>
-          {'//'} usually playing <a href="https://jstris.jezevec10.com/u/ponyoponyo" target="_blank" rel="noopener noreferrer" tabIndex={-1} className="tooltip inline-link" data-tooltip="my jstris profile" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '0.5px solid currentColor', userSelect: 'text', WebkitUserSelect: 'text' }}>tetris</a> or piano in my free time and snowboarding the south island peaks during the winter<span className="cursor" />
+          {'//'} usually playing <a href="https://jstris.jezevec10.com/u/ponyoponyo" target="_blank" rel="noopener noreferrer" tabIndex={-1} className="tooltip inline-link" data-tooltip="my jstris profile" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '0.5px solid currentColor', userSelect: 'text', WebkitUserSelect: 'text' }}>tetris</a> or piano in my free time and snowboarding the south island <a href="https://www.queenstownnz.co.nz/stories/post/a-guide-to-south-island-ski-fields/" target="_blank" rel="noopener noreferrer" tabIndex={-1} className="tooltip inline-link" data-tooltip="a guide to south island ski fields" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '0.5px solid currentColor', userSelect: 'text', WebkitUserSelect: 'text' }}>peaks</a> during the winter<span className="cursor" />
         </p>
       </div>
     </section>
