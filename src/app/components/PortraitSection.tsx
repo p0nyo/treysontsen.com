@@ -148,20 +148,37 @@ const DEFAULT_BINDS = {
   left: 'ArrowLeft', right: 'ArrowRight',
   softDrop: 'ArrowDown', hardDrop: ' ',
   rotateCW: 'ArrowUp', rotateCCW: null as string | null, rotate180: null as string | null,
-  hold: null as string | null, reset: 'r',
+  hold: 'c' as string | null, reset: 'r', exit: 'Escape',
 };
 
 const MY_BINDS = {
   left: 'l', right: "'",
   softDrop: ';', hardDrop: 'p',
   rotateCW: 'd', rotateCCW: 'a', rotate180: 's',
-  hold: ' ', reset: 'r',
+  hold: ' ', reset: 'r', exit: 'Escape',
 };
 
 type Binds = typeof DEFAULT_BINDS;
 
 // ─── Tetris component ──────────────────────────────────────────────────────────
 
+const STORAGE_KEY = 'tetris-settings';
+
+function loadSettings(): { binds: Binds; das: number; arr: number; sdf: number } {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      return {
+        binds: { ...DEFAULT_BINDS, ...saved.binds },
+        das: saved.das ?? 167,
+        arr: saved.arr ?? 33,
+        sdf: saved.sdf ?? 33,
+      };
+    }
+  } catch {}
+  return { binds: { ...DEFAULT_BINDS }, das: 167, arr: 33, sdf: 33 };
+}
 
 function TetrisGame({ onExit }: { onExit: () => void }) {
   const [board, setBoard] = useState<Board>(emptyBoard);
@@ -175,13 +192,23 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   const [lines, setLines] = useState(0);
   const [held, setHeld] = useState<number | null>(null);
   const [canHold, setCanHold] = useState(true);
-  const [binds, setBinds] = useState<Binds>(DEFAULT_BINDS);
-  const [das, setDas] = useState(167);
-  const [arr, setArr] = useState(33);
-  const [sdf, setSdf] = useState(33);
+  const [binds, setBinds] = useState<Binds>(() => loadSettings().binds);
+  const [das, setDas] = useState(() => loadSettings().das);
+  const [arr, setArr] = useState(() => loadSettings().arr);
+  const [sdf, setSdf] = useState(() => loadSettings().sdf);
+  const [showSettings, setShowSettings] = useState(false);
+  const [pendingBinds, setPendingBinds] = useState<Binds>({ ...DEFAULT_BINDS });
+  const [pendingDas, setPendingDas] = useState(167);
+  const [pendingArr, setPendingArr] = useState(33);
+  const [pendingSdf, setPendingSdf] = useState(33);
+  const [listeningFor, setListeningFor] = useState<keyof Binds | null>(null);
 
   const stateRef = useRef({ board, shape, pos, rot, pieceType, queue, over, held, canHold, binds });
   stateRef.current = { board, shape, pos, rot, pieceType, queue, over, held, canHold, binds };
+  const showSettingsRef = useRef(false);
+  showSettingsRef.current = showSettings;
+  const listeningForRef = useRef<keyof Binds | null>(null);
+  listeningForRef.current = listeningFor;
   const dasRef = useRef(das);
   const arrRef = useRef(arr);
   const sdfRef = useRef(sdf);
@@ -287,16 +314,20 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   }, [clearMovement]);
 
   useEffect(() => {
-    if (over) return;
+    if (over || showSettings) return;
     const speed = Math.max(150, 500 - Math.floor(lines / 5) * 50);
     const id = setInterval(drop, speed);
     return () => clearInterval(id);
-  }, [drop, over, lines]);
+  }, [drop, over, lines, showSettings]);
 
   useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
+      if (showSettingsRef.current) {
+        if (e.key === 'Escape' && !listeningForRef.current) setShowSettings(false);
+        return;
+      }
       const { board: b, shape: s, pos: p, rot: cr, pieceType: pt, over: o, held: h, canHold: ch, binds: kb } = stateRef.current;
-      if (e.key === 'Escape') { onExit(); return; }
+      if (kb.exit && e.key === kb.exit) { onExit(); return; }
       if (o) { if (e.key === kb.reset) reset(); return; }
 
       if (e.key === kb.left) { e.preventDefault(); startMoving('left'); }
@@ -358,8 +389,41 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
     };
   }, [drop, lock, reset, spawn, onExit, startMoving, clearMovement, clearSdf]);
 
+  useEffect(() => {
+    if (!listeningFor) return;
+    const handler = (e: KeyboardEvent) => {
+      e.preventDefault(); e.stopPropagation();
+      if (e.key === 'Escape') { setListeningFor(null); return; }
+      setPendingBinds(b => ({ ...b, [listeningFor]: e.key }));
+      setListeningFor(null);
+    };
+    window.addEventListener('keydown', handler, true);
+    return () => window.removeEventListener('keydown', handler, true);
+  }, [listeningFor]);
+
   const display = renderBoard(board, shape, pos.x, pos.y, over);
   const usingMine = binds === MY_BINDS;
+
+  const BIND_LABELS: [keyof Binds, string][] = [
+    ['left','move left'],['right','move right'],['softDrop','soft drop'],
+    ['hardDrop','hard drop'],['rotateCW','rotate cw'],['rotateCCW','rotate ccw'],
+    ['rotate180','rotate 180'],['hold','hold'],['reset','reset'],['exit','back to portrait'],
+  ];
+  const keyLabel = (k: string | null) => {
+    if (!k) return '—';
+    const m: Record<string, string> = { ' ': 'space', ArrowLeft: '←', ArrowRight: '→', ArrowDown: '↓', ArrowUp: '↑', Escape: 'esc' };
+    return m[k] ?? k;
+  };
+  const openSettings = () => {
+    setPendingBinds({ ...binds }); setPendingDas(das); setPendingArr(arr); setPendingSdf(sdf);
+    setShowSettings(true);
+  };
+  const saveSettings = () => {
+    setBinds(pendingBinds); setDas(pendingDas); setArr(pendingArr); setSdf(pendingSdf);
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ binds: pendingBinds, das: pendingDas, arr: pendingArr, sdf: pendingSdf })); } catch {}
+    setShowSettings(false);
+  };
+  const BTN: React.CSSProperties = { background: 'none', borderTop: 'none', borderLeft: 'none', borderRight: 'none', fontFamily: 'inherit', cursor: 'pointer', padding: 0, fontStyle: 'normal' };
 
   const renderMini = (type: number): string => {
     const s = PIECES[type];
@@ -372,8 +436,11 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
     return lines.join('\n');
   };
 
+  const INPUT_STYLE: React.CSSProperties = { width: '48px', background: 'none', border: 'none', borderBottom: '1px solid #333', color: '#888', fontFamily: 'inherit', fontSize: '11px', textAlign: 'center', outline: 'none', MozAppearance: 'textfield' };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', userSelect: 'none', width: '100%', height: '100%', justifyContent: 'center', fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace" }}>
+    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '0.5rem', userSelect: 'none', width: '100%', height: '100%', justifyContent: 'center', fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace" }}>
+      {/* Game board — always rendered */}
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
         <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: '#d4d4cc' }}>
           {display}
@@ -393,43 +460,48 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         </div>
       </div>
       <div style={{ fontSize: '12px', color: '#888', display: 'flex', gap: '1.5rem' }}>
-        <span>score: {score}</span>
+        <button tabIndex={-1} onClick={openSettings} className="game-link" style={{ ...BTN, fontSize: '12px', color: '#555' }}>settings</button>
         <span>lines: {lines}</span>
       </div>
       <div style={{ fontSize: '11px', color: '#333' }}>{'// sorry no t-spins or any spins atm'}</div>
       {over && <div style={{ fontSize: '12px', color: '#e8e8e0' }}>game over — press <strong>r</strong> to restart</div>}
-      <div style={{ fontSize: '11px', color: '#444', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-        {usingMine
-          ? <><span>l/&apos; move</span><span>; soft</span><span>p hard</span><span>d/a/s rotate</span><span>space hold</span><span>r reset</span><span>esc exit</span></>
-          : <><span>← → move</span><span>↓ soft</span><span>space hard</span><span>↑ rotate</span><span>r reset</span><span>esc exit</span></>
-        }
-      </div>
-      {/* DAS / ARR inputs */}
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <label style={{ fontSize: '11px', color: '#555', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          das
-          <input tabIndex={-1} type="number" min={0} max={500} value={das} onChange={e => setDas(Number(e.target.value))} style={{ width: '48px', background: 'none', border: 'none', borderBottom: '1px solid #333', color: '#888', fontFamily: 'inherit', fontSize: '11px', textAlign: 'center', outline: 'none', MozAppearance: 'textfield' }} onWheel={e => e.currentTarget.blur()} />
-          ms
-        </label>
-        <label style={{ fontSize: '11px', color: '#555', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          arr
-          <input tabIndex={-1} type="number" min={0} max={500} value={arr} onChange={e => setArr(Number(e.target.value))} style={{ width: '48px', background: 'none', border: 'none', borderBottom: '1px solid #333', color: '#888', fontFamily: 'inherit', fontSize: '11px', textAlign: 'center', outline: 'none', MozAppearance: 'textfield' }} onWheel={e => e.currentTarget.blur()} />
-          ms
-        </label>
-        <label style={{ fontSize: '11px', color: '#555', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          sdf
-          <input tabIndex={-1} type="number" min={0} max={500} value={sdf} onChange={e => setSdf(Number(e.target.value))} style={{ width: '48px', background: 'none', border: 'none', borderBottom: '1px solid #333', color: '#888', fontFamily: 'inherit', fontSize: '11px', textAlign: 'center', outline: 'none', MozAppearance: 'textfield' }} onWheel={e => e.currentTarget.blur()} />
-          ms
-        </label>
-      </div>
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <button tabIndex={-1} onClick={onExit} className="game-link" style={{ background: 'none', borderTop: 'none', borderLeft: 'none', borderRight: 'none', color: '#555', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer', padding: 0, fontStyle: 'normal' }}>
+        <button tabIndex={-1} onClick={onExit} className="game-link" style={{ ...BTN, fontSize: '11px', color: '#555' }}>
           ← back to portrait
         </button>
-        <button tabIndex={-1} onClick={() => { if (usingMine) { setBinds(DEFAULT_BINDS); setDas(167); setArr(33); } else { setBinds(MY_BINDS); setDas(90); setArr(10); setSdf(10); } }} className="game-link" style={{ background: 'none', borderTop: 'none', borderLeft: 'none', borderRight: 'none', color: '#555', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer', padding: 0, fontStyle: 'normal' }}>
-          {usingMine ? 'use default' : 'use my keybinds'}
-        </button>
       </div>
+
+      {/* Settings modal overlay */}
+      {showSettings && (
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,10,10,0.93)', border: '0.5px solid rgba(232,232,224,0.15)', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '1rem', zIndex: 10 }}>
+          <div style={{ fontSize: '13px', lineHeight: '1.6' }}>
+            {BIND_LABELS.map(([key, label]) => (
+              <div key={key} style={{ display: 'flex', justifyContent: 'space-between', gap: '2rem' }}>
+                <span style={{ color: '#555' }}>{label}</span>
+                <button onClick={() => setListeningFor(key)} style={{ ...BTN, fontSize: '13px', color: listeningFor === key ? '#e8e8e0' : '#888', borderBottom: `0.5px solid ${listeningFor === key ? '#e8e8e0' : '#333'}` }}>
+                  {listeningFor === key ? '...' : keyLabel(pendingBinds[key])}
+                </button>
+              </div>
+            ))}
+            <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
+              <label style={{ fontSize: '11px', color: '#555', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                das <input tabIndex={-1} type="number" min={0} max={500} value={pendingDas} onChange={e => setPendingDas(Number(e.target.value))} style={INPUT_STYLE} onWheel={e => e.currentTarget.blur()} /> ms
+              </label>
+              <label style={{ fontSize: '11px', color: '#555', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                arr <input tabIndex={-1} type="number" min={0} max={500} value={pendingArr} onChange={e => setPendingArr(Number(e.target.value))} style={INPUT_STYLE} onWheel={e => e.currentTarget.blur()} /> ms
+              </label>
+              <label style={{ fontSize: '11px', color: '#555', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                sdf <input tabIndex={-1} type="number" min={0} max={500} value={pendingSdf} onChange={e => setPendingSdf(Number(e.target.value))} style={INPUT_STYLE} onWheel={e => e.currentTarget.blur()} /> ms
+              </label>
+            </div>
+            <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
+              <button onClick={() => { setPendingBinds({ ...MY_BINDS }); setPendingDas(90); setPendingArr(10); setPendingSdf(10); }} className="game-link" style={{ ...BTN, fontSize: '11px', color: '#555' }}>use my keybinds</button>
+              <button onClick={() => { setPendingBinds({ ...DEFAULT_BINDS }); setPendingDas(167); setPendingArr(33); setPendingSdf(33); }} className="game-link" style={{ ...BTN, fontSize: '11px', color: '#555' }}>reset</button>
+              <button onClick={saveSettings} className="game-link" style={{ ...BTN, fontSize: '11px', color: '#555' }}>save & close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
