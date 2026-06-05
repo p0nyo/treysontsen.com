@@ -558,7 +558,7 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
           </div>
         </div>
       </div>
-      <div style={{ fontSize: '12px', color: '#888', display: 'flex', gap: '1rem' }}>
+      <div style={{ fontSize: '12px', color: '#888', display: 'flex', gap: '1rem', position: 'relative', zIndex: 7 }}>
         <button tabIndex={-1} onClick={openSettings} className="game-link" style={{ ...BTN, fontSize: '12px', color: '#555' }}>settings</button>
         <button tabIndex={-1} onClick={() => { const next = mode === 'zen' ? '40l' : 'zen'; setMode(next as 'zen' | '40l'); reset(); }} className="game-link tooltip" data-tooltip={mode === 'zen' ? 'switch to 40L mode' : 'switch to zen mode'} style={{ ...BTN, fontSize: '12px', color: '#555' }}>mode: {mode === '40l' ? '40L' : 'zen'}</button>
       </div>
@@ -597,6 +597,7 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
               <button onClick={() => { setPendingBinds({ ...DEFAULT_BINDS }); setPendingDas(167); setPendingArr(33); setPendingSdf(33); }} className="game-link" style={{ ...BTN, fontSize: '11px', color: '#555' }}>reset</button>
               <button onClick={saveSettings} className="game-link" style={{ ...BTN, fontSize: '11px', color: '#555' }}>save & close</button>
             </div>
+            <div style={{ marginTop: '0.75rem', fontSize: '11px', color: '#333' }}>{'// keybinds are saved to browser local storage'}</div>
           </div>
         </div>
       )}
