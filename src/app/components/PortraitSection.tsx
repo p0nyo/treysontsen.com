@@ -499,7 +499,7 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         <button tabIndex={-1} onClick={openSettings} className="game-link" style={{ ...BTN, fontSize: '12px', color: '#555' }}>settings</button>
         <span>lines: {lines}</span>
       </div>
-      <div style={{ fontSize: '11px', color: '#333' }}>{'// sorry no t-spins or any spins atm'}</div>
+      <div style={{ fontSize: '11px', color: '#333' }}>{'// sorry no t-spins atm'}</div>
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <button tabIndex={-1} onClick={onExit} className="game-link" style={{ ...BTN, fontSize: '11px', color: '#555' }}>
           ← back to portrait
