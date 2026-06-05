@@ -1,7 +1,6 @@
 import PortraitSection from "./components/PortraitSection";
 import FriendLink from "./components/FriendLink";
 import BioSection from "./components/BioSection";
-import SocialLinks from "./components/SocialLinks";
 
 const ASCII_TREYSON = ` _________  ________  _______       ___    ___ ________  ________  ________
 |\\___   ___\\\\   __  \\|\\  ___ \\     |\\  \\  /  /|\\   ____\\|\\   __  \\|\\   ___  \\
@@ -21,6 +20,12 @@ const ASCII_TSEN = ` _________  ________  _______   ________
         \\|__| |\\_________\\|_______|\\|__| \\|__|
               \\|_________|`;
 
+const socials = [
+  { label: "twitter", href: "https://x.com/98tsuj98", symbol: "[x]", tooltip: "documenting things i build" },
+  { label: "github", href: "https://github.com/p0nyo", symbol: "[gh]", tooltip: "projects and (private) notes" },
+  { label: "linkedin", href: "https://www.linkedin.com/in/tsen", symbol: "[li]", tooltip: "semi-professional career profile" },
+  { label: "instagram", href: "https://www.instagram.com/bigredtreyson/", symbol: "[ig]", tooltip: "posting film of my friends/life" },
+];
 
 export default function Home() {
   return (
@@ -56,7 +61,23 @@ export default function Home() {
         <div style={{ maxWidth: "clamp(0px, 72vw, 560px)" }}>
         <BioSection />
 
-        <SocialLinks />
+        {/* Social links */}
+        <section style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+            {socials.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link tooltip inline-link"
+                data-tooltip={s.tooltip}
+              >
+                {s.symbol} {s.label}
+              </a>
+            ))}
+          </div>
+        </section>
         </div>
       </div>
       <div className="widget" style={{
