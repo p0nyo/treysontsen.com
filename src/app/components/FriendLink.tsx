@@ -34,7 +34,7 @@ export default function FriendLink() {
         href="#"
         onClick={handleClick}
         className="tooltip inline-link"
-        data-tooltip="randomly selects a portfolio"
+        data-tooltip={`randomly selects portfolio from [${FRIENDS.length}]`}
         style={{ color: 'inherit', textDecoration: 'none', borderBottom: '0.5px solid currentColor' }}
       >
         friends
