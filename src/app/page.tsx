@@ -2,18 +2,29 @@ import PortraitSection from "./components/PortraitSection";
 import FriendLink from "./components/FriendLink";
 import BioSection from "./components/BioSection";
 
-const ASCII_NAME = `   __                                      __
-  / /_________  __  ___________  ____     / /_________  ____
- / __/ ___/ _ \\/ / / / ___/ __ \\/ __ \\   / __/ ___/ _ \\/ __ \\
-/ /_/ /  /  __/ /_/ (__  ) /_/ / / / /  / /_(__  )  __/ / / /
-\\__/_/   \\___/\\__, /____/\\____/_/ /_/   \\__/____/\\___/_/ /_/
-             /____/`;
+const ASCII_TREYSON = ` _________  ________  _______       ___    ___ ________  ________  ________
+|\\___   ___\\\\   __  \\|\\  ___ \\     |\\  \\  /  /|\\   ____\\|\\   __  \\|\\   ___  \\
+\\|___ \\  \\_\\ \\  \\|\\  \\ \\   __/|    \\ \\  \\/  / | \\  \\___|\\ \\  \\|\\  \\ \\  \\\\ \\  \\
+     \\ \\  \\ \\ \\   _  _\\ \\  \\_|/__   \\ \\    / / \\ \\_____  \\ \\  \\\\\\  \\ \\  \\\\ \\  \\
+      \\ \\  \\ \\ \\  \\\\  \\\\ \\  \\_|\\ \\   \\/  /  /   \\|____|\\  \\ \\  \\\\\\  \\ \\  \\\\ \\  \\
+       \\ \\__\\ \\ \\__\\\\ _\\\\ \\_______\\__/  / /       ____\\_\\  \\ \\_______\\ \\__\\\\ \\__\\
+        \\|__|  \\|__|\\|__|\\|_______|\\___/ /       |\\_________\\|_______|\\|__| \\|__|
+                                  \\|___|/        \\|_________|`;
+
+const ASCII_TSEN = ` _________  ________  _______   ________
+|\\___   ___\\\\   ____\\|\\  ___ \\ |\\   ___  \\
+\\|___ \\  \\_\\ \\  \\___|\\ \\   __/|\\ \\  \\\\ \\  \\
+     \\ \\  \\ \\ \\_____  \\ \\  \\_|/_\\ \\  \\\\ \\  \\
+      \\ \\  \\ \\|____|\\  \\ \\  \\_|\\ \\ \\  \\\\ \\  \\
+       \\ \\__\\  ____\\_\\  \\ \\_______\\ \\__\\\\ \\__\\
+        \\|__| |\\_________\\|_______|\\|__| \\|__|
+              \\|_________|`;
 
 const socials = [
   { label: "twitter", href: "https://x.com/98tsuj98", symbol: "[x]", tooltip: "documenting things i build" },
   { label: "github", href: "https://github.com/p0nyo", symbol: "[gh]", tooltip: "projects and (private) notes" },
   { label: "linkedin", href: "https://www.linkedin.com/in/tsen", symbol: "[li]", tooltip: "semi-professional career profile" },
-  { label: "instagram", href: "https://www.instagram.com/tsennpai/", symbol: "[ig]", tooltip: "my main account" },
+  { label: "instagram", href: "https://www.instagram.com/bigredtreyson/", symbol: "[ig]", tooltip: "posting film of my friends/life" },
 ];
 
 export default function Home() {
@@ -41,19 +52,10 @@ export default function Home() {
         }}
       >
         {/* Name in ASCII */}
-        <pre
-          className="ascii-name"
-          style={{
-            fontSize: "clamp(1px, 2.5vw, 15px)",
-            lineHeight: "1.3",
-            margin: 0,
-            color: "#e8e8e0",
-            whiteSpace: "pre",
-            overflowX: "auto",
-          }}
-        >
-          {ASCII_NAME}
-        </pre>
+        <div className="ascii-name" style={{ display: "flex", alignItems: "flex-start", overflowX: "visible" }}>{
+          }<pre style={{ fontSize: "clamp(1px, 1.1vw, 8px)", lineHeight: "1.3", margin: 0, color: "#e8e8e0", whiteSpace: "pre" }}>{ASCII_TREYSON}</pre>{
+          }<pre style={{ fontSize: "clamp(1px, 0.65vw, 5px)", lineHeight: "1.3", margin: 0, marginLeft: "-1.2rem", color: "#e8e8e0", whiteSpace: "pre" }}>{ASCII_TSEN}</pre>
+        </div>
 
         {/* Bio, currently, links — capped to name width */}
         <div style={{ maxWidth: "clamp(0px, 72vw, 560px)" }}>
