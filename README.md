@@ -24,7 +24,7 @@
 ### prev. designs
 <img width="561" height="282" alt="image" src="https://github.com/user-attachments/assets/29d309c3-a2c3-4354-a074-f46b3686d362" />
 
-`[2026-12]`: a redesign that never made it to deployment, stayed hidden in my figma
+`[2025-12]`: a redesign that never made it to deployment, stayed hidden in my figma
 
 <img width="412" height="256" alt="image" src="https://github.com/user-attachments/assets/7e2ca364-834c-471d-b40c-52bb616f601a" />
 
