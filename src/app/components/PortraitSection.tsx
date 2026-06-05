@@ -27,6 +27,19 @@ function randomPieceType() {
   return Math.floor(Math.random() * PIECES.length);
 }
 
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function newBag(): number[] {
+  return shuffle([0, 1, 2, 3, 4, 5, 6]);
+}
+
 // SRS kick tables: key = "fromRot>toRot", value = [[dx,dy], ...]
 const KICKS_JLSZT: Record<string, [number, number][]> = {
   '0>1': [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
@@ -92,8 +105,8 @@ function fits(board: Board, shape: number[][], x: number, y: number): boolean {
     for (let c = 0; c < shape[r].length; c++) {
       if (!shape[r][c]) continue;
       const nr = y + r, nc = x + c;
-      if (nr < 0 || nr >= H || nc < 0 || nc >= W) return false;
-      if (board[nr][nc]) return false;
+      if (nr >= H || nc < 0 || nc >= W) return false;
+      if (nr >= 0 && board[nr][nc]) return false;
     }
   }
   return true;
@@ -103,7 +116,7 @@ function place(board: Board, shape: number[][], x: number, y: number): Board {
   const b = board.map(r => [...r]);
   for (let r = 0; r < shape.length; r++)
     for (let c = 0; c < shape[r].length; c++)
-      if (shape[r][c]) b[y + r][x + c] = 1;
+      if (shape[r][c]) { const nr = y + r; if (nr >= 0 && nr < H) b[nr][x + c] = 1; }
   return b;
 }
 
@@ -181,12 +194,21 @@ function loadSettings(): { binds: Binds; das: number; arr: number; sdf: number }
 }
 
 function TetrisGame({ onExit }: { onExit: () => void }) {
+  const bagRef = useRef<number[]>([]);
   const [board, setBoard] = useState<Board>(emptyBoard);
-  const [queue, setQueue] = useState<number[]>(() => Array.from({ length: 5 }, randomPieceType));
-  const [pieceType, setPieceType] = useState(() => randomPieceType());
+  const [pieceType, setPieceType] = useState<number>(() => {
+    bagRef.current = newBag();
+    return bagRef.current.shift()!;
+  });
+  const [queue, setQueue] = useState<number[]>(() =>
+    Array.from({ length: 5 }, () => {
+      if (bagRef.current.length === 0) bagRef.current = newBag();
+      return bagRef.current.shift()!;
+    })
+  );
   const [shape, setShape] = useState<number[][]>(() => PIECES[pieceType]);
   const [rot, setRot] = useState(0);
-  const [pos, setPos] = useState({ x: 3, y: 0 });
+  const [pos, setPos] = useState({ x: 3, y: -1 });
   const [score, setScore] = useState(0);
   const [over, setOver] = useState(false);
   const [lines, setLines] = useState(0);
@@ -234,6 +256,11 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
     }, 500);
   };
 
+  const nextFromBag = useCallback((): number => {
+    if (bagRef.current.length === 0) bagRef.current = newBag();
+    return bagRef.current.shift()!;
+  }, []);
+
   const clearMovement = useCallback(() => {
     if (dasTimer.current) clearTimeout(dasTimer.current);
     if (arrTimer.current) clearInterval(arrTimer.current);
@@ -241,16 +268,16 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
 
   const clearSdf = useCallback(() => {
     if (sdfTimer.current) { clearInterval(sdfTimer.current); sdfTimer.current = null; }
-  }, []);
+  }, [nextFromBag]);
 
   const spawn = useCallback((b: Board, nextType?: number) => {
     touchingGround.current = false;
     const { queue: q } = stateRef.current;
     const pt = nextType ?? q[0];
-    const newQueue = nextType != null ? q : [...q.slice(1), randomPieceType()];
+    const newQueue = nextType != null ? q : [...q.slice(1), nextFromBag()];
     const s = PIECES[pt];
-    const p = { x: Math.floor((W - s[0].length) / 2), y: 0 };
-    if (!fits(b, s, p.x, p.y)) { setOver(true); }
+    const p = { x: Math.floor((W - s[0].length) / 2), y: -1 };
+    if (!fits(b, s, p.x, p.y)) { setBoard(place(b, s, p.x, p.y)); setOver(true); }
     else { setQueue(newQueue); setPieceType(pt); setShape(s); setRot(0); setPos(p); setBoard(b); setCanHold(true); }
   }, []);
 
@@ -285,12 +312,13 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
 
   const reset = useCallback(() => {
     clearMovement();
-    const pt = randomPieceType();
-    const newQueue = Array.from({ length: 5 }, randomPieceType);
-    setBoard(emptyBoard()); setQueue(newQueue); setPieceType(pt); setShape(PIECES[pt]); setRot(0); setPos({ x: 3, y: 0 });
+    bagRef.current = [];
+    const pt = nextFromBag();
+    const newQueue = Array.from({ length: 5 }, nextFromBag);
+    setBoard(emptyBoard()); setQueue(newQueue); setPieceType(pt); setShape(PIECES[pt]); setRot(0); setPos({ x: 3, y: -1 });
     setScore(0); setLines(0); setOver(false); setHeld(null); setCanHold(true);
     touchingGround.current = false;
-  }, [clearMovement]);
+  }, [clearMovement, nextFromBag]);
 
   const startMoving = useCallback((dir: 'left' | 'right') => {
     const dx = dir === 'left' ? -1 : 1;
@@ -362,8 +390,8 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         const nextType = h ?? stateRef.current.queue[0];
         const next = PIECES[nextType];
         setHeld(pt);
-        if (h == null) setQueue(q => [...q.slice(1), randomPieceType()]);
-        const sp = { x: Math.floor((W - next[0].length) / 2), y: 0 };
+        if (h == null) setQueue(q => [...q.slice(1), nextFromBag()]);
+        const sp = { x: Math.floor((W - next[0].length) / 2), y: -1 };
         if (!fits(b, next, sp.x, sp.y)) { setOver(true); return; }
         setPieceType(nextType);
         setShape(next); setRot(0); setPos(sp);
