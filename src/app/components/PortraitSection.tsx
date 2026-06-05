@@ -23,8 +23,56 @@ function emptyBoard(): Board {
   return Array.from({ length: H }, () => Array(W).fill(0));
 }
 
-function randomPiece() {
-  return PIECES[Math.floor(Math.random() * PIECES.length)];
+function randomPieceType() {
+  return Math.floor(Math.random() * PIECES.length);
+}
+
+// SRS kick tables: key = "fromRot>toRot", value = [[dx,dy], ...]
+const KICKS_JLSZT: Record<string, [number, number][]> = {
+  '0>1': [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+  '1>0': [[0,0],[1,0],[1,-1],[0,2],[1,2]],
+  '1>2': [[0,0],[1,0],[1,-1],[0,2],[1,2]],
+  '2>1': [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+  '2>3': [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+  '3>2': [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+  '3>0': [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+  '0>3': [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+};
+
+const KICKS_I: Record<string, [number, number][]> = {
+  '0>1': [[0,0],[-2,0],[1,0],[-2,-1],[1,2]],
+  '1>0': [[0,0],[2,0],[-1,0],[2,1],[-1,-2]],
+  '1>2': [[0,0],[-1,0],[2,0],[-1,2],[2,-1]],
+  '2>1': [[0,0],[1,0],[-2,0],[1,-2],[-2,1]],
+  '2>3': [[0,0],[2,0],[-1,0],[2,1],[-1,-2]],
+  '3>2': [[0,0],[-2,0],[1,0],[-2,-1],[1,2]],
+  '3>0': [[0,0],[1,0],[-2,0],[1,-2],[-2,1]],
+  '0>3': [[0,0],[-1,0],[2,0],[-1,2],[2,-1]],
+};
+
+function getKicks(pieceType: number, fromRot: number, toRot: number): [number, number][] {
+  if (pieceType === 1) return [[0, 0]]; // O piece, no kicks
+  const table = pieceType === 0 ? KICKS_I : KICKS_JLSZT;
+  return table[`${fromRot}>${toRot}`] ?? [[0, 0]];
+}
+
+function tryRotate(
+  board: Board,
+  shape: number[][],
+  pos: { x: number; y: number },
+  pieceType: number,
+  fromRot: number,
+  rotFn: (s: number[][]) => number[][],
+  toRot: number
+): { shape: number[][]; pos: { x: number; y: number }; rot: number } | null {
+  const rotated = rotFn(shape);
+  const kicks = getKicks(pieceType, fromRot, toRot);
+  for (const [dx, dy] of kicks) {
+    const nx = pos.x + dx;
+    const ny = pos.y + dy;
+    if (fits(board, rotated, nx, ny)) return { shape: rotated, pos: { x: nx, y: ny }, rot: toRot };
+  }
+  return null;
 }
 
 function rotateCW(shape: number[][]): number[][] {
@@ -117,7 +165,9 @@ type Binds = typeof DEFAULT_BINDS;
 
 function TetrisGame({ onExit }: { onExit: () => void }) {
   const [board, setBoard] = useState<Board>(emptyBoard);
-  const [shape, setShape] = useState<number[][]>(() => randomPiece());
+  const [pieceType, setPieceType] = useState(() => randomPieceType());
+  const [shape, setShape] = useState<number[][]>(() => PIECES[pieceType]);
+  const [rot, setRot] = useState(0);
   const [pos, setPos] = useState({ x: 3, y: 0 });
   const [score, setScore] = useState(0);
   const [over, setOver] = useState(false);
@@ -129,8 +179,8 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   const [arr, setArr] = useState(33);
   const [sdf, setSdf] = useState(33);
 
-  const stateRef = useRef({ board, shape, pos, over, held, canHold, binds });
-  stateRef.current = { board, shape, pos, over, held, canHold, binds };
+  const stateRef = useRef({ board, shape, pos, rot, pieceType, over, held, canHold, binds });
+  stateRef.current = { board, shape, pos, rot, pieceType, over, held, canHold, binds };
   const dasRef = useRef(das);
   const arrRef = useRef(arr);
   const sdfRef = useRef(sdf);
@@ -141,6 +191,20 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   const dasTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const arrTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const sdfTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lockTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchingGround = useRef(false);
+
+  const clearLock = () => { if (lockTimer.current) { clearTimeout(lockTimer.current); lockTimer.current = null; } };
+
+  const lockRef = useRef<((b: Board, s: number[][], p: { x: number; y: number }) => void) | null>(null);
+
+  const startLockTimer = () => {
+    clearLock();
+    lockTimer.current = setTimeout(() => {
+      const { board: b2, shape: s2, pos: p2 } = stateRef.current;
+      lockRef.current?.(b2, s2, p2);
+    }, 500);
+  };
 
   const clearMovement = useCallback(() => {
     if (dasTimer.current) clearTimeout(dasTimer.current);
@@ -151,15 +215,19 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
     if (sdfTimer.current) { clearInterval(sdfTimer.current); sdfTimer.current = null; }
   }, []);
 
-  const spawn = useCallback((b: Board, nextShape?: number[][]) => {
-    const s = nextShape ?? randomPiece();
+  const spawn = useCallback((b: Board, nextType?: number) => {
+    touchingGround.current = false;
+    const pt = nextType ?? randomPieceType();
+    const s = PIECES[pt];
     const p = { x: Math.floor((W - s[0].length) / 2), y: 0 };
     if (!fits(b, s, p.x, p.y)) { setOver(true); }
-    else { setShape(s); setPos(p); setBoard(b); setCanHold(true); }
+    else { setPieceType(pt); setShape(s); setRot(0); setPos(p); setBoard(b); setCanHold(true); }
   }, []);
 
   const lock = useCallback((b: Board, s: number[][], p: { x: number; y: number }) => {
     clearSdf();
+    clearLock();
+    touchingGround.current = false;
     const placed = place(b, s, p.x, p.y);
     const { board: cleared, lines: l } = clearLines(placed);
     setScore(sc => sc + l * 100 + 10);
@@ -167,18 +235,30 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
     spawn(cleared);
   }, [spawn, clearSdf]);
 
+  lockRef.current = lock;
+
   const drop = useCallback(() => {
     const { board: b, shape: s, pos: p, over: o } = stateRef.current;
     if (o) return;
     const ny = p.y + 1;
-    if (fits(b, s, p.x, ny)) setPos({ x: p.x, y: ny });
-    else lock(b, s, p);
+    if (fits(b, s, p.x, ny)) {
+      touchingGround.current = false;
+      clearLock();
+      setPos({ x: p.x, y: ny });
+    } else {
+      if (!touchingGround.current) {
+        touchingGround.current = true;
+        startLockTimer();
+      }
+    }
   }, [lock]);
 
   const reset = useCallback(() => {
     clearMovement();
-    setBoard(emptyBoard()); setShape(randomPiece()); setPos({ x: 3, y: 0 });
+    const pt = randomPieceType();
+    setBoard(emptyBoard()); setPieceType(pt); setShape(PIECES[pt]); setRot(0); setPos({ x: 3, y: 0 });
     setScore(0); setLines(0); setOver(false); setHeld(null); setCanHold(true);
+    touchingGround.current = false;
   }, [clearMovement]);
 
   const startMoving = useCallback((dir: 'left' | 'right') => {
@@ -189,9 +269,9 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
       if (arrRef.current === 0) {
         let nx = p.x;
         while (fits(b, s, nx + dx, p.y)) nx += dx;
-        setPos({ x: nx, y: p.y });
+        if (nx !== p.x) { setPos({ x: nx, y: p.y }); if (touchingGround.current) startLockTimer(); }
       } else {
-        if (fits(b, s, p.x + dx, p.y)) setPos(prev => ({ ...prev, x: prev.x + dx }));
+        if (fits(b, s, p.x + dx, p.y)) { setPos(prev => ({ ...prev, x: prev.x + dx })); if (touchingGround.current) startLockTimer(); }
       }
     };
     clearMovement();
@@ -211,18 +291,24 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
 
   useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
-      const { board: b, shape: s, pos: p, over: o, held: h, canHold: ch, binds: kb } = stateRef.current;
+      const { board: b, shape: s, pos: p, rot: cr, pieceType: pt, over: o, held: h, canHold: ch, binds: kb } = stateRef.current;
       if (e.key === 'Escape') { onExit(); return; }
       if (o) { if (e.key === kb.reset) reset(); return; }
 
       if (e.key === kb.left) { e.preventDefault(); startMoving('left'); }
       else if (e.key === kb.right) { e.preventDefault(); startMoving('right'); }
       else if (e.key === kb.rotateCW) {
-        const r = rotateCW(s); if (fits(b, r, p.x, p.y)) setShape(r);
+        const res = tryRotate(b, s, p, pt, cr, rotateCW, (cr + 1) % 4);
+        if (res) { setShape(res.shape); setPos(res.pos); setRot(res.rot); if (touchingGround.current) startLockTimer(); }
       } else if (kb.rotateCCW && e.key === kb.rotateCCW) {
-        const r = rotateCCW(s); if (fits(b, r, p.x, p.y)) setShape(r);
+        const res = tryRotate(b, s, p, pt, cr, rotateCCW, (cr + 3) % 4);
+        if (res) { setShape(res.shape); setPos(res.pos); setRot(res.rot); if (touchingGround.current) startLockTimer(); }
       } else if (kb.rotate180 && e.key === kb.rotate180) {
-        const r = rotate180(s); if (fits(b, r, p.x, p.y)) setShape(r);
+        const mid = tryRotate(b, s, p, pt, cr, rotateCW, (cr + 1) % 4);
+        if (mid) {
+          const res = tryRotate(b, mid.shape, mid.pos, pt, mid.rot, rotateCW, (mid.rot + 1) % 4);
+          if (res) { setShape(res.shape); setPos(res.pos); setRot(res.rot); if (touchingGround.current) startLockTimer(); }
+        }
       } else if (e.key === kb.softDrop) {
         if (!e.repeat) {
           drop();
@@ -238,11 +324,14 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         e.preventDefault();
         if (!ch) return;
         setCanHold(false);
-        const next = h ?? randomPiece();
+        const next = h ?? PIECES[randomPieceType()];
         setHeld(s);
         const sp = { x: Math.floor((W - next[0].length) / 2), y: 0 };
         if (!fits(b, next, sp.x, sp.y)) { setOver(true); return; }
-        setShape(next); setPos(sp);
+        const nextType = PIECES.indexOf(next);
+        setPieceType(nextType >= 0 ? nextType : pt);
+        setShape(next); setRot(0); setPos(sp);
+        touchingGround.current = false; clearLock();
       } else if (e.key === kb.reset) {
         reset();
       }
