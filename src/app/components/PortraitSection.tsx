@@ -224,11 +224,16 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   const [pendingArr, setPendingArr] = useState(33);
   const [pendingSdf, setPendingSdf] = useState(33);
   const [listeningFor, setListeningFor] = useState<keyof Binds | null>(null);
+  const [mode, setMode] = useState<'zen' | '40l'>('zen');
+  const [finishTime, setFinishTime] = useState<number | null>(null);
+  const [elapsed, setElapsed] = useState(0);
 
   const stateRef = useRef({ board, shape, pos, rot, pieceType, queue, over, held, canHold, binds });
   stateRef.current = { board, shape, pos, rot, pieceType, queue, over, held, canHold, binds };
   const showSettingsRef = useRef(false);
   showSettingsRef.current = showSettings;
+  const modeRef = useRef<'zen' | '40l'>('zen');
+  modeRef.current = mode;
   const listeningForRef = useRef<keyof Binds | null>(null);
   listeningForRef.current = listeningFor;
   const dasRef = useRef(das);
@@ -243,6 +248,9 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   const sdfTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const lockTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchingGround = useRef(false);
+  const timerStartRef = useRef<number | null>(null);
+  const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const linesRef = useRef(0);
 
   const clearLock = () => { if (lockTimer.current) { clearTimeout(lockTimer.current); lockTimer.current = null; } };
 
@@ -255,6 +263,20 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
       lockRef.current?.(b2, s2, p2);
     }, 500);
   };
+
+  const stopTimer = useCallback(() => {
+    if (timerIntervalRef.current) { clearInterval(timerIntervalRef.current); timerIntervalRef.current = null; }
+  }, []);
+
+  const startTimer = useCallback(() => {
+    stopTimer();
+    const t = Date.now();
+    timerStartRef.current = t;
+    setElapsed(0);
+    timerIntervalRef.current = setInterval(() => {
+      setElapsed(Date.now() - t);
+    }, 50);
+  }, [stopTimer]);
 
   const nextFromBag = useCallback((): number => {
     if (bagRef.current.length === 0) bagRef.current = newBag();
@@ -285,12 +307,23 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
     clearSdf();
     clearLock();
     touchingGround.current = false;
+    if (modeRef.current === '40l' && timerStartRef.current === null) startTimer();
     const placed = place(b, s, p.x, p.y);
     const { board: cleared, lines: l } = clearLines(placed);
     setScore(sc => sc + l * 100 + 10);
-    setLines(ln => ln + l);
+    const newLines = linesRef.current + l;
+    linesRef.current = newLines;
+    setLines(newLines);
+    if (modeRef.current === '40l' && newLines >= 40) {
+      const t = timerStartRef.current != null ? Date.now() - timerStartRef.current : 0;
+      stopTimer();
+      setFinishTime(t);
+      setBoard(cleared);
+      setOver(true);
+      return;
+    }
     spawn(cleared);
-  }, [spawn, clearSdf]);
+  }, [spawn, clearSdf, stopTimer]);
 
   lockRef.current = lock;
 
@@ -312,13 +345,17 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
 
   const reset = useCallback(() => {
     clearMovement();
+    stopTimer();
     bagRef.current = [];
     const pt = nextFromBag();
     const newQueue = Array.from({ length: 5 }, nextFromBag);
+    linesRef.current = 0;
     setBoard(emptyBoard()); setQueue(newQueue); setPieceType(pt); setShape(PIECES[pt]); setRot(0); setPos({ x: 3, y: -1 });
     setScore(0); setLines(0); setOver(false); setHeld(null); setCanHold(true);
+    setFinishTime(null); setElapsed(0);
+    timerStartRef.current = null;
     touchingGround.current = false;
-  }, [clearMovement, nextFromBag]);
+  }, [clearMovement, nextFromBag, stopTimer, startTimer]);
 
   const startMoving = useCallback((dir: 'left' | 'right') => {
     const dx = dir === 'left' ? -1 : 1;
@@ -453,6 +490,14 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   };
   const BTN: React.CSSProperties = { background: 'none', borderTop: 'none', borderLeft: 'none', borderRight: 'none', fontFamily: 'inherit', cursor: 'pointer', padding: 0, fontStyle: 'normal' };
 
+  const formatTime = (ms: number) => {
+    const totalS = Math.floor(ms / 1000);
+    const frac = String(ms % 1000).padStart(3, '0').slice(0, 2);
+    const mins = Math.floor(totalS / 60);
+    const secs = String(totalS % 60).padStart(2, '0');
+    return mins > 0 ? `${mins}:${secs}.${frac}` : `${secs}.${frac}`;
+  };
+
   const renderMini = (type: number): string => {
     const s = PIECES[type];
     const rows = s.filter(row => row.some(c => c));
@@ -476,8 +521,18 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
           </pre>
           {over && (
             <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,10,10,0.88)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', zIndex: 5 }}>
-              <span style={{ fontSize: '12px', color: '#e8e8e0' }}>game over</span>
-              <span style={{ fontSize: '11px', color: '#555' }}>press <strong style={{ color: '#888' }}>r</strong> to restart</span>
+              {finishTime != null ? (
+                <>
+                  <span style={{ fontSize: '12px', color: '#e8e8e0' }}>40L complete</span>
+                  <span style={{ fontSize: '13px', color: '#d4d4cc' }}>{formatTime(finishTime)}</span>
+                  <span style={{ fontSize: '11px', color: '#555' }}>press <strong style={{ color: '#888' }}>r</strong> to retry</span>
+                </>
+              ) : (
+                <>
+                  <span style={{ fontSize: '12px', color: '#e8e8e0' }}>game over</span>
+                  <span style={{ fontSize: '11px', color: '#555' }}>press <strong style={{ color: '#888' }}>r</strong> to restart</span>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -489,15 +544,23 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
               </pre>
             ))}
           </div>
-          {held != null
-            ? <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: canHold ? '#d4d4cc' : '#555' }}>{renderMini(held)}</pre>
-            : <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: '#333' }}>{'  '.repeat(4)}</pre>
-          }
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15.6px' }}>
+            {held != null
+              ? <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: canHold ? '#d4d4cc' : '#555' }}>{renderMini(held)}</pre>
+              : <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: '#333' }}>{'  '.repeat(4)}</pre>
+            }
+            {mode === '40l' && !over && (
+              <span style={{ fontSize: '11px', color: '#555', textAlign: 'right' }}>{formatTime(elapsed)}</span>
+            )}
+            <span style={{ fontSize: '11px', color: '#555', textAlign: 'right' }}>
+              {mode === '40l' ? `lines: ${Math.min(lines, 40)} / 40` : `lines: ${lines}`}
+            </span>
+          </div>
         </div>
       </div>
-      <div style={{ fontSize: '12px', color: '#888', display: 'flex', gap: '1.5rem' }}>
+      <div style={{ fontSize: '12px', color: '#888', display: 'flex', gap: '1rem' }}>
         <button tabIndex={-1} onClick={openSettings} className="game-link" style={{ ...BTN, fontSize: '12px', color: '#555' }}>settings</button>
-        <span>lines: {lines}</span>
+        <button tabIndex={-1} onClick={() => { const next = mode === 'zen' ? '40l' : 'zen'; setMode(next as 'zen' | '40l'); reset(); }} className="game-link tooltip" data-tooltip={mode === 'zen' ? 'switch to 40L mode' : 'switch to zen mode'} style={{ ...BTN, fontSize: '12px', color: '#555' }}>mode: {mode === '40l' ? '40L' : 'zen'}</button>
       </div>
       <div style={{ fontSize: '11px', color: '#333' }}>{'// sorry no t-spins atm'}</div>
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
