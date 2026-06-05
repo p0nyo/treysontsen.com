@@ -442,9 +442,17 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '0.5rem', userSelect: 'none', width: '100%', height: '100%', justifyContent: 'center', fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace" }}>
       {/* Game board — always rendered */}
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-        <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: '#d4d4cc' }}>
-          {display}
-        </pre>
+        <div style={{ position: 'relative' }}>
+          <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: '#d4d4cc' }}>
+            {display}
+          </pre>
+          {over && (
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,10,10,0.88)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', zIndex: 5 }}>
+              <span style={{ fontSize: '12px', color: '#e8e8e0' }}>game over</span>
+              <span style={{ fontSize: '11px', color: '#555' }}>press <strong style={{ color: '#888' }}>r</strong> to restart</span>
+            </div>
+          )}
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '15.6px', paddingBottom: '15.6px', alignSelf: 'stretch' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {queue.map((type, i) => (
@@ -464,7 +472,6 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         <span>lines: {lines}</span>
       </div>
       <div style={{ fontSize: '11px', color: '#333' }}>{'// sorry no t-spins or any spins atm'}</div>
-      {over && <div style={{ fontSize: '12px', color: '#e8e8e0' }}>game over — press <strong>r</strong> to restart</div>}
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <button tabIndex={-1} onClick={onExit} className="game-link" style={{ ...BTN, fontSize: '11px', color: '#555' }}>
           ← back to portrait
