@@ -425,7 +425,7 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         <button tabIndex={-1} onClick={onExit} className="game-link" style={{ background: 'none', borderTop: 'none', borderLeft: 'none', borderRight: 'none', color: '#555', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer', padding: 0, fontStyle: 'normal' }}>
           ← back to portrait
         </button>
-        <button tabIndex={-1} onClick={() => { if (usingMine) { setBinds(DEFAULT_BINDS); setDas(167); setArr(33); } else { setBinds(MY_BINDS); setDas(90); setArr(10); } }} className="game-link" style={{ background: 'none', borderTop: 'none', borderLeft: 'none', borderRight: 'none', color: '#555', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer', padding: 0, fontStyle: 'normal' }}>
+        <button tabIndex={-1} onClick={() => { if (usingMine) { setBinds(DEFAULT_BINDS); setDas(167); setArr(33); } else { setBinds(MY_BINDS); setDas(90); setArr(10); setSdf(10); } }} className="game-link" style={{ background: 'none', borderTop: 'none', borderLeft: 'none', borderRight: 'none', color: '#555', fontFamily: 'inherit', fontSize: '11px', cursor: 'pointer', padding: 0, fontStyle: 'normal' }}>
           {usingMine ? 'use default' : 'use my keybinds'}
         </button>
       </div>
