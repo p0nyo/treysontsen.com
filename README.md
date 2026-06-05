@@ -1,6 +1,6 @@
 <img width="1011" height="465" alt="image" src="https://github.com/user-attachments/assets/5906d72d-fd5d-4d69-b1ce-4d3424d60e5e" />
 
-# treysontsen.com
+# [treysontsen.com](https://www.treysontsen.com/)
 - took heavy inspiration from moriliu's terminal website (run `ssh ssh.moriliu.com` in terminal)
 - features a playable ASCII tetris with default keybinds + option to use my keybinds
 - tooltips + small easter eggs
