@@ -88,6 +88,32 @@ input[type=number]::-webkit-outer-spin-button {
   transition: color 0.15s;
 }
 
+.tooltip {
+  position: relative;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a1a;
+  color: #888;
+  font-size: 10px;
+  white-space: nowrap;
+  padding: 3px 7px;
+  border: 1px solid #333;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0s;
+  letter-spacing: 0.05em;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
+
 .game-link:hover {
   color: #e8e8e0 !important;
 }
