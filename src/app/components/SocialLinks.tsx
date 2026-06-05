@@ -47,31 +47,17 @@ export default function SocialLinks() {
     const isAndroid = /Android/.test(ua);
     const storeUrl = isIOS ? pending.iosStore : isAndroid ? pending.androidStore : null;
 
-    // use iframe so Safari fails silently instead of showing "invalid URL" error
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = pending.appHref;
-    document.body.appendChild(iframe);
-    setTimeout(() => { if (document.body.contains(iframe)) document.body.removeChild(iframe); }, 3000);
+    let appOpened = false;
+    const onBlur = () => { appOpened = true; };
+    window.addEventListener('blur', onBlur, { once: true });
+
+    window.location.href = pending.appHref;
 
     if (storeUrl) {
-      let elapsed = 0;
-      let interval: ReturnType<typeof setInterval>;
-
-      // tick elapsed only while page is visible — pauses if OS prompt is showing
-      interval = setInterval(() => {
-        if (!document.hidden) elapsed += 100;
-        if (elapsed >= 1500) {
-          clearInterval(interval);
-          // only redirect if app didn't open (page never went hidden)
-          if (!document.hidden) window.location.href = storeUrl;
-        }
-      }, 100);
-
-      // if app opened, page goes hidden — cancel everything
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) clearInterval(interval);
-      }, { once: true });
+      setTimeout(() => {
+        window.removeEventListener('blur', onBlur);
+        if (!appOpened) window.location.href = storeUrl;
+      }, 1500);
     }
 
     setPending(null);
