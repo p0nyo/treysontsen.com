@@ -165,6 +165,7 @@ type Binds = typeof DEFAULT_BINDS;
 
 function TetrisGame({ onExit }: { onExit: () => void }) {
   const [board, setBoard] = useState<Board>(emptyBoard);
+  const [queue, setQueue] = useState<number[]>(() => Array.from({ length: 5 }, randomPieceType));
   const [pieceType, setPieceType] = useState(() => randomPieceType());
   const [shape, setShape] = useState<number[][]>(() => PIECES[pieceType]);
   const [rot, setRot] = useState(0);
@@ -172,15 +173,15 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   const [score, setScore] = useState(0);
   const [over, setOver] = useState(false);
   const [lines, setLines] = useState(0);
-  const [held, setHeld] = useState<number[][] | null>(null);
+  const [held, setHeld] = useState<number | null>(null);
   const [canHold, setCanHold] = useState(true);
   const [binds, setBinds] = useState<Binds>(DEFAULT_BINDS);
   const [das, setDas] = useState(167);
   const [arr, setArr] = useState(33);
   const [sdf, setSdf] = useState(33);
 
-  const stateRef = useRef({ board, shape, pos, rot, pieceType, over, held, canHold, binds });
-  stateRef.current = { board, shape, pos, rot, pieceType, over, held, canHold, binds };
+  const stateRef = useRef({ board, shape, pos, rot, pieceType, queue, over, held, canHold, binds });
+  stateRef.current = { board, shape, pos, rot, pieceType, queue, over, held, canHold, binds };
   const dasRef = useRef(das);
   const arrRef = useRef(arr);
   const sdfRef = useRef(sdf);
@@ -217,11 +218,13 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
 
   const spawn = useCallback((b: Board, nextType?: number) => {
     touchingGround.current = false;
-    const pt = nextType ?? randomPieceType();
+    const { queue: q } = stateRef.current;
+    const pt = nextType ?? q[0];
+    const newQueue = nextType != null ? q : [...q.slice(1), randomPieceType()];
     const s = PIECES[pt];
     const p = { x: Math.floor((W - s[0].length) / 2), y: 0 };
     if (!fits(b, s, p.x, p.y)) { setOver(true); }
-    else { setPieceType(pt); setShape(s); setRot(0); setPos(p); setBoard(b); setCanHold(true); }
+    else { setQueue(newQueue); setPieceType(pt); setShape(s); setRot(0); setPos(p); setBoard(b); setCanHold(true); }
   }, []);
 
   const lock = useCallback((b: Board, s: number[][], p: { x: number; y: number }) => {
@@ -256,7 +259,8 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   const reset = useCallback(() => {
     clearMovement();
     const pt = randomPieceType();
-    setBoard(emptyBoard()); setPieceType(pt); setShape(PIECES[pt]); setRot(0); setPos({ x: 3, y: 0 });
+    const newQueue = Array.from({ length: 5 }, randomPieceType);
+    setBoard(emptyBoard()); setQueue(newQueue); setPieceType(pt); setShape(PIECES[pt]); setRot(0); setPos({ x: 3, y: 0 });
     setScore(0); setLines(0); setOver(false); setHeld(null); setCanHold(true);
     touchingGround.current = false;
   }, [clearMovement]);
@@ -324,12 +328,13 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
         e.preventDefault();
         if (!ch) return;
         setCanHold(false);
-        const next = h ?? PIECES[randomPieceType()];
-        setHeld(s);
+        const nextType = h ?? stateRef.current.queue[0];
+        const next = PIECES[nextType];
+        setHeld(pt);
+        if (h == null) setQueue(q => [...q.slice(1), randomPieceType()]);
         const sp = { x: Math.floor((W - next[0].length) / 2), y: 0 };
         if (!fits(b, next, sp.x, sp.y)) { setOver(true); return; }
-        const nextType = PIECES.indexOf(next);
-        setPieceType(nextType >= 0 ? nextType : pt);
+        setPieceType(nextType);
         setShape(next); setRot(0); setPos(sp);
         touchingGround.current = false; clearLock();
       } else if (e.key === kb.reset) {
@@ -356,15 +361,40 @@ function TetrisGame({ onExit }: { onExit: () => void }) {
   const display = renderBoard(board, shape, pos.x, pos.y, over);
   const usingMine = binds === MY_BINDS;
 
+  const renderMini = (type: number): string => {
+    const s = PIECES[type];
+    const rows = s.filter(row => row.some(c => c));
+    const WIDTH = 8; // 4 cols × 2 chars
+    const lines = rows.map(row => {
+      const rendered = row.map(c => c ? '[]' : '  ').join('');
+      return rendered.padStart(WIDTH);
+    });
+    return lines.join('\n');
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', userSelect: 'none', width: '100%', height: '100%', justifyContent: 'center', fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace" }}>
-      <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: '#d4d4cc' }}>
-        {display}
-      </pre>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+        <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: '#d4d4cc' }}>
+          {display}
+        </pre>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '15.6px', paddingBottom: '15.6px', alignSelf: 'stretch' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            {queue.map((type, i) => (
+              <pre key={i} style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: i === 0 ? '#d4d4cc' : '#555' }}>
+                {renderMini(type)}
+              </pre>
+            ))}
+          </div>
+          {held != null
+            ? <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: canHold ? '#d4d4cc' : '#555' }}>{renderMini(held)}</pre>
+            : <pre style={{ fontSize: '13px', lineHeight: '1.2', margin: 0, color: '#333' }}>{'  '.repeat(4)}</pre>
+          }
+        </div>
+      </div>
       <div style={{ fontSize: '12px', color: '#888', display: 'flex', gap: '1.5rem' }}>
         <span>score: {score}</span>
         <span>lines: {lines}</span>
-        {held && <span>hold: ▪</span>}
       </div>
       {over && <div style={{ fontSize: '12px', color: '#e8e8e0' }}>game over — press <strong>r</strong> to restart</div>}
       <div style={{ fontSize: '11px', color: '#444', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
