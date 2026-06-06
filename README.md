@@ -1,4 +1,4 @@
-<img width="1011" height="465" alt="image" src="https://github.com/user-attachments/assets/5906d72d-fd5d-4d69-b1ce-4d3424d60e5e" />
+<img width="707" height="242" alt="image" src="https://github.com/user-attachments/assets/c5a43e1b-198d-4200-8f32-bc16c337d8e1" />
 
 # [treysontsen.com](https://www.treysontsen.com/)
 - took heavy inspiration from moriliu's terminal website (run `ssh ssh.moriliu.com` in terminal)
