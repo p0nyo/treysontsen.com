@@ -2,8 +2,15 @@
 
 # [treysontsen.com](https://www.treysontsen.com/)
 - took heavy inspiration from moriliu's terminal website (run `ssh ssh.moriliu.com` in terminal)
-- features a playable ASCII tetris with default keybinds + option to use my keybinds
-- tooltips + small easter eggs
+- features a playable ASCII tetris with:
+    - default keybinds + option to edit keybinds (saves to browser local storage)
+    - option to change to **my** keybinds
+    - srs spin system (wall kicks)
+    - zen and 40L sprint mode
+    - 5 piece preview + hold
+    - 7-bag randomizer
+- hoverable tooltips for all (most) links
+- built with nextjs + claude code lol
 
 ### backlog
 - [ ] signup/login to save highscores and keybinds
