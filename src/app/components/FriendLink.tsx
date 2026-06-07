@@ -1,23 +1,26 @@
 'use client';
 
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 
 const FRIENDS = [
-  'https://www.watshisname-stuutzer.com/',
-  'https://blackpri0r.dev/',
-  'https://my-portfolio-tau-smoky-10.vercel.app/',
-  'https://www.stastigay.com/',
-  'https://yush9.dev/#home',
-  'https://violetchen.dev/',
+  { label: 'justin', href: 'https://www.watshisname-stuutzer.com/' },
+  { label: 'lawrence', href: 'https://blackpri0r.dev/' },
+  { label: 'jassel', href: 'https://my-portfolio-tau-smoky-10.vercel.app/' },
+  { label: 'stas', href: 'https://www.stastigay.com/' },
+  { label: 'ayush', href: 'https://yush9.dev/#home' },
+  { label: 'violet', href: 'https://violetchen.dev/' },
 ];
 
 export default function FriendLink() {
-  const index = useRef(Math.floor(Math.random() * FRIENDS.length));
+  const [open, setOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    window.open(FRIENDS[index.current], '_blank', 'noopener,noreferrer');
-    index.current = (index.current + 1) % FRIENDS.length;
+  const handleEnter = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpen(true);
+  };
+  const handleLeave = () => {
+    closeTimer.current = setTimeout(() => setOpen(false), 100);
   };
 
   return (
@@ -30,15 +33,49 @@ export default function FriendLink() {
       color: '#333',
       userSelect: 'none',
     }}>
-      my <a
-        href="#"
-        onClick={handleClick}
-        className="tooltip inline-link"
-        data-tooltip={`randomly selects portfolio from [${FRIENDS.length}]`}
-        style={{ color: 'inherit', textDecoration: 'none', borderBottom: '0.5px solid currentColor' }}
+      my{' '}
+      <span
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
+        style={{ position: 'relative', display: 'inline-block' }}
       >
-        friends
-      </a> also have websites
+        <span className="inline-link" style={{ borderBottom: '0.5px solid currentColor', cursor: 'pointer' }}>
+          friends
+        </span>
+        {open && (
+          <div
+            onMouseEnter={handleEnter}
+            onMouseLeave={handleLeave}
+            style={{
+              position: 'absolute',
+              bottom: 'calc(100% + 5px)',
+              right: 0,
+              background: '#1a1a1a',
+              border: '1px solid #333',
+              padding: '6px 10px',
+              display: 'inline-flex',
+              flexDirection: 'column',
+              gap: '4px',
+              whiteSpace: 'nowrap',
+              zIndex: 100,
+            }}
+          >
+            {FRIENDS.map((f) => (
+              <a
+                key={f.href}
+                href={f.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-link"
+                style={{ color: '#888', textDecoration: 'underline', textDecorationColor: 'rgba(232, 232, 224, 0.3)', textDecorationThickness: '0.5px', fontSize: '10px', display: 'block' }}
+              >
+                {f.label}
+              </a>
+            ))}
+          </div>
+        )}
+      </span>
+      {' '}have websites too
     </div>
   );
 }

@@ -89,7 +89,7 @@ export default function Home() {
         color: '#333',
         userSelect: 'none',
       }}>
-        © {new Date().getFullYear()} treyson tsen, inspired by <a href="https://www.instagram.com/morilliu/" target="_blank" rel="noopener noreferrer" className="tooltip inline-link" data-tooltip="look at her terminal website reel" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '0.5px solid currentColor' }}>@morilliu</a>
+        © {new Date().getFullYear()} treyson tsen, inspired by <a href="https://www.instagram.com/morilliu/" target="_blank" rel="noopener noreferrer" className="tooltip inline-link" data-tooltip="run `ssh ssh.moriliu.com` in terminal" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '0.5px solid currentColor' }}>@morilliu</a>
       </div>
       <FriendLink />
     </main>

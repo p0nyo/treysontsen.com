@@ -4,7 +4,7 @@
 - took heavy inspiration from moriliu's terminal website (run `ssh ssh.moriliu.com` in terminal)
 - features a playable ASCII tetris with:
     - default keybinds + option to edit keybinds (saves to browser local storage)
-    - option to change to **my** keybinds
+    - option to change to ***my*** keybinds
     - srs spin system (wall kicks)
     - zen and 40L sprint mode
     - 5 piece preview + hold
@@ -16,6 +16,7 @@
 - [ ] signup/login to save highscores and keybinds
 - [ ] competitive scoreboard
 - [ ] t-spins or any other piece spins
+- [ ] potentially navbar for other pages (general, projects, friends, changelog)
 
 ## changelog
 #### 2026
