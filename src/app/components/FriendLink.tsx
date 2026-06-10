@@ -9,6 +9,7 @@ const FRIENDS = [
   { label: 'stas', href: 'https://www.stastigay.com/' },
   { label: 'ayush', href: 'https://yush9.dev/#home' },
   { label: 'violet', href: 'https://violetchen.dev/' },
+  { label: 'chris', href: 'https://www.chrischiem.com/' },
 ];
 
 export default function FriendLink() {
