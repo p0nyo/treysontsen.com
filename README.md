@@ -19,17 +19,20 @@
 - [ ] potentially navbar for other pages (general, projects, friends, changelog)
 
 ## changelog
-#### 2026
+#### v1.0.0
 - `[2026-06-05]` srs spins, 40L sprint, 7-bag randomizer, keybindings saved to browser local storage, link to friends who also have websites
 - `[2026-06-04]` new ascii portfolio redesign, tetris
+#### v0.2.4
 - `[2026-05-10]` old portfolio taken down, replaced with "overhaul in progress" message
-#### 2025
+#### v0.2.3
 - `[2025-04-17]` added resume
-#### 2024
+#### v0.2.2
 - `[2024-10-07]` added site wide animations
 - `[2024-10-05]` added timeline animations
+#### v0.2.1
 - `[2024-10-04]` created projects and timeline pages
 - `[2024-10-03]` created homepage and bio pages
+#### v0.1.0
 - `[2024-10-02]` created portfolio website
 
 ## prev. designs
