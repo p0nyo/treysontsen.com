@@ -26,12 +26,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "treysontsen[dot]com",
-              "url": "https://treysontsen.com",
-            }),
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "treysontsen[dot]com",
+                "url": "https://treysontsen.com",
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "name": "Treyson Tsen",
+                "url": "https://treysontsen.com",
+                "sameAs": [
+                  "https://github.com/p0nyo",
+                  "https://www.linkedin.com/in/tsen",
+                  "https://x.com/98tsuj98",
+                  "https://www.instagram.com/tsennpai/",
+                  "https://nz.pinterest.com/treysontsen",
+                ],
+              },
+            ]),
           }}
         />
       </head>
