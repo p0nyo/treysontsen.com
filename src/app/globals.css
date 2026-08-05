@@ -40,6 +40,10 @@ body {
 }
 
 @media (max-width: 768px) {
+  html, body {
+    height: 100dvh;
+    overflow: hidden;
+  }
   .portrait-wrap {
     align-self: flex-start;
   }
