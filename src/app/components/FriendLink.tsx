@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 
 const FRIENDS = [
-  { label: 'justin', href: 'https://www.watshisname-stuutzer.com/' },
+  { label: 'justin', href: 'https://www.stuutzer.com/' },
   { label: 'lawrence', href: 'https://blackpri0r.dev/' },
   { label: 'jassel', href: 'https://my-portfolio-tau-smoky-10.vercel.app/' },
   { label: 'stas', href: 'https://www.stastigay.com/' },
