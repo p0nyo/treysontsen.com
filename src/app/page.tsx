@@ -21,10 +21,10 @@ const ASCII_TSEN = ` _________  ________  _______   ________
               \\|_________|`;
 
 const socials = [
-  { label: "twitter", href: "https://x.com/98tsuj98", symbol: "[x]", tooltip: "documenting things i build" },
   { label: "github", href: "https://github.com/p0nyo", symbol: "[gh]", tooltip: "projects and (private) notes" },
   { label: "linkedin", href: "https://www.linkedin.com/in/tsen", symbol: "[li]", tooltip: "semi-professional career profile" },
-  { label: "instagram", href: "https://www.instagram.com/bigredtreyson/", symbol: "[ig]", tooltip: "posting film of my friends/life" },
+  { label: "instagram", href: "https://www.instagram.com/bigredtreyson/", symbol: "[ig]", tooltip: "posting film of friends and life" },
+  { label: "twitter", href: "https://x.com/98tsuj98", symbol: "[x]", tooltip: "dead account" },
 ];
 
 export default function Home() {
